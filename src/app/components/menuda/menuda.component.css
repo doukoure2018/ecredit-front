@@ -1,0 +1,32 @@
+.horizontal-menu {
+  background-color: #343a40; /* Change this to the desired background color */
+}
+
+.bottom-navbar {
+  background-color: #495057; /* Change this to the desired background color */
+}
+
+.bottom-navbar .nav-link {
+  color: #ffffff; /* Change the text color */
+}
+
+.bottom-navbar .nav-link:hover {
+  color: #ffc107; /* Add hover effect color */
+}
+
+.bottom-navbar .nav-item.active .nav-link {
+  background-color: #007bff; /* Active item background color */
+  color: #ffffff; /* Active item text color */
+}
+
+.submenu {
+  background-color: #6c757d; /* Change submenu background color */
+}
+
+.submenu-item a {
+  color: #ffffff; /* Change submenu link color */
+}
+
+.submenu-item a:hover {
+  color: #ffc107; /* Change submenu link hover color */
+}

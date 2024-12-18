@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+.full-width {
+  width: 100%;
+}
+.mat-form-field {
+  margin: 8px 0;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.mat-form-field {
+  margin-right: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 16px; /* Adjust the gap between buttons */
+}

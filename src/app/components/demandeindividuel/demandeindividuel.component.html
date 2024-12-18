@@ -1,0 +1,88 @@
+<ng-container *ngIf="demandeIndividuelState$ | async as state">
+    <div class="container-scroller">
+        <app-menu></app-menu>
+        <div class="container-fluid page-body-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title"> Liste de demandes </h3>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Formulaire</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Adhesion Personne Physique</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card px-2">
+                                <div class="card-body">
+                                    <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                                        <div class="table-responsive w-100">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="bg-dark text-white">
+                                                        <th>Information Personnelle</th>
+                                                        <th class="text-center">Information sur L'activité</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="text-center">
+                                                        <td class="text-left">
+                                                            {{state.appData?.data?.demande?.nom}}
+                                                            {{state.appData?.data?.demande?.prenom}}
+                                                        </td>
+                                                        <td> {{state.appData?.data?.demande?.activite}}</td>
+
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <td class="text-left">
+                                                            Contact: {{state.appData?.data?.demande?.telephone}}</td>
+                                                        <td>{{state.appData?.data?.demande?.raison}}</td>
+
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <td class="text-left">
+                                                            Code Membre: {{state.appData?.data?.demande?.numeroMembre}}
+                                                        </td>
+                                                        <td>{{state.appData?.data?.demande?.object}}</td>
+
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <td class="text-left">{{state.appData?.data?.demande?.quartier}}
+                                                        </td>
+                                                        <td> <span class="my-5">{{'Montant: '+
+                                                                state.appData?.data?.demande?.montant}}</span></td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="container-fluid w-100">
+                                        <br>
+                                        <form class="forms-sample" #creditForm="ngForm"
+                                            (submit)="addCreditIndividuel(creditForm)">
+                                            <input type="hidden" name="user_id"
+                                                [ngModel]="state.appData?.data?.user?.id">
+                                            <input type="hidden" name="individuel_id"
+                                                [ngModel]="state.appData?.data?.individuel?.id">
+                                            <button type="submit" class="btn btn-primary float-right mt-4 ml-2">
+                                                Mise en place de Crédit
+                                            </button>
+                                            <button
+                                                (click)="cancelDemande(state.appData?.data?.user,state.appData?.data?.demande)"
+                                                class="btn btn-light float-danger float-right mt-4">Annuler
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</ng-container>

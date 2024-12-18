@@ -1,0 +1,152 @@
+<ng-container *ngIf="personneCautionState$ | async as state">
+    <p class="card-description">Information sur la Personne Caution</p>
+    <form [formGroup]="personnecautionForm">
+        <!-- Reference Credit -->
+        <div class="form-group row">
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nom </mat-label>
+                    <input matInput formControlName="nom" placeholder="Nom Personne Caution" />
+                    <mat-error *ngIf="personnecautionForm.get('nom')?.invalid">Nombre
+                        requis</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Prenom Personne Caution</mat-label>
+                    <input matInput formControlName="prenom" placeholder="Définir le prenom Personne Caution" />
+                    <mat-error *ngIf="personnecautionForm.get('prenom')?.invalid">Champ
+                        requis
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Contact</mat-label>
+                    <input matInput formControlName="telephone" placeholder="Définir le contact Personne Caution" />
+                    <mat-error *ngIf="personnecautionForm.get('telephone')?.invalid">Champ
+                        requis
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Son Activité</mat-label>
+                    <input matInput formControlName="activite" placeholder="Activite" />
+                    <mat-error *ngIf="personnecautionForm.get('activite')?.invalid">Champ
+                        requis</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Son Age</mat-label>
+                    <input matInput formControlName="age" placeholder="Définir son age" />
+                    <mat-error *ngIf="personnecautionForm.get('age')?.invalid">Champ
+                        requis
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Profession</mat-label>
+                    <input matInput formControlName="profession" placeholder="Définir sa Profession" />
+                    <mat-error *ngIf="personnecautionForm.get('profession')?.invalid">Champ
+                        requis
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <!-- Button 1: Enregister -->
+            <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING 
+        
+                                                   || personnecautionForm.invalid" type="button" (click)="onSave()"
+                class="btn btn-primary">
+                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                    style="margin-right: 5px"></span>
+                <span *ngIf="isLoading$ | async">Loading...</span>
+                <span *ngIf="!(isLoading$ | async)">Enregister</span>
+            </button>
+        </div>
+
+    </form>
+    <br><br>
+    <div class="col-xm-12">
+        <table mat-table [dataSource]="dataSource" class="table table-hover table-bordered table-striped">
+            <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> # </th>
+                <td mat-cell *matCellDef="let personnecaution; let i = index" class="text-center">
+                    {{ i + 1 }}
+                </td>
+                <!-- Sent Date Column -->
+                <ng-container matColumnDef="nom">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">
+                        Nom </th>
+                    <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                        {{ personnecaution.nom }}
+                    </td>
+                </ng-container>
+            </ng-container>
+            <!-- Message Column -->
+            <ng-container matColumnDef="prenom">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Prenom
+                </th>
+                <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                    {{ personnecaution.prenom }}
+                </td>
+            </ng-container>
+            <!-- Status Column -->
+            <ng-container matColumnDef="telephone">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    Contact </th>
+                <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                    {{ personnecaution.telephone }}
+                </td>
+            </ng-container>
+            <!-- Mode Column -->
+            <ng-container matColumnDef="profession">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    Profession </th>
+                <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                    {{ personnecaution.profession }}
+                </td>
+            </ng-container>
+            <!-- Contact Column -->
+            <ng-container matColumnDef="activite">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    Activité </th>
+                <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                    {{ personnecaution.activite }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    Age </th>
+                <td mat-cell *matCellDef="let personnecaution" class="text-center">
+                    {{ personnecaution.age }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef class="text-center"> Action
+                </th>
+                <td mat-cell *matCellDef="let infoCampaign" class="text-center">
+                    <button type="button" (click)="
+                                                updataPersonneCaution(
+                                                )
+                                            " class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i>Update
+                    </button>
+                </td>
+            </ng-container>
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="align-middle"></tr>
+        </table>
+    </div>
+</ng-container>

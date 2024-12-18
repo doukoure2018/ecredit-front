@@ -26,20 +26,38 @@
             "outputPath": "dist/ecredit",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "src/assets/media",
+                "output": "/media/"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/assets/plugins/@mdi/font/css/materialdesignicons.min.css",
+              "src/assets/plugins/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css",
+              "src/assets/app/css/app.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/app/js/app.js",
+              "src/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
+
+              "src/assets/plugins/jquery-steps/jquery.steps.min.js",
+              "src/assets/plugins/jquery-validation/jquery.validate.min.js",
+              "src/assets/js/off-canvas.js",
+              "src/assets/js/hoverable-collapse.js",
+              "src/assets/js/misc.js",
+              "src/assets/js/settings.js",
+              "src/assets/js/todolist.js",
+              "src/assets/js/dashboard.js",
+              "src/assets/js/wizard.js"
+            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
@@ -88,10 +106,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -99,9 +114,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         }

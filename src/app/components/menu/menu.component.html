@@ -1,0 +1,293 @@
+<div class="horizontal-menu">
+    <app-topbar [user]="user"></app-topbar>
+    <nav class="bottom-navbar">
+        <div class="container">
+            <ul class="nav page-navigation">
+                <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/']">
+                        <i class="mdi mdi-home menu-icon"></i>
+                        <span class="menu-title">Tableau de Bord</span>
+                    </a>
+                </li>
+
+                <li class="nav-item mega-menu ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">Membre</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <div class="col-group-wrapper row">
+                            <div class="col-group col-md-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="category-heading">Adhesion</p>
+                                        <div class="submenu-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <ul>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/personnep']">Personne Physique</a></li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/personnem']">Personne Morale</a></li>
+
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-group col-md-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="category-heading">Ouverture Compte</p>
+                                        <div class="submenu-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <ul>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/comptep']">Personne Physique </a></li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/comptem']">Personne Morale</a>
+                                                        </li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/liermembre']">Lier Membre</a></li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-clipboard-text menu-icon"></i>
+                        <span class="menu-title">Gestion des Tacherons</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/addTacheron']">
+                                    Souscrire</a></li>
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/listTacheron']">
+                                    Liste</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- <li class="nav-item mega-menu ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-chart-bar menu-icon"></i>
+                        <span class="menu-title">Data</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <div class="col-group-wrapper row">
+                            <div class="col-group col-md-6">
+                                <p class="category-heading">Charts</p>
+                                <div class="submenu-item">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/chartjs.html">Chart Js</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/morris.html">Morris</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/flot.html">Flot</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/google-charts.html">Google Charts</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/sparklinejs.html">Sparkline Js</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/c3-charts.html">C3 Charts</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/chartist.html">Chartist</a></li>
+                                                <li class="nav-item "><a class="nav-link"
+                                                        href="charts/justgage.html">JustGage</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-group col-md-3">
+                                <p class="category-heading">Table</p>
+                                <ul class="submenu-item">
+                                    <li class="nav-item "><a class="nav-link" href="tables/basic-table.html">Basic
+                                            Table</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="tables/data-table.html">Data
+                                            Table</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="tables/js-grid.html">Js-grid</a>
+                                    </li>
+                                    <li class="nav-item "><a class="nav-link" href="tables/sortable-table.html">Sortable
+                                            Table</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-group col-md-3">
+                                <p class="category-heading">Maps</p>
+                                <ul class="submenu-item">
+                                    <li class="nav-item "><a class="nav-link" href="maps/vector-map.html">Vector
+                                            Map</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="maps/mapael.html">Mapael</a>
+                                    </li>
+                                    <li class="nav-item "><a class="nav-link" href="maps/google-maps.html">Google
+                                            Maps</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li> -->
+                <!-- <li class="nav-item mega-menu">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-content-copy menu-icon"></i>
+                        <span class="menu-title">Sample Pages</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <div class="col-group-wrapper row">
+                            <div class="col-group col-md-2">
+                                <p class="category-heading">User Pages</p>
+                                <ul class="submenu-item">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/login.html">Login</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/login-2.html">Login 2</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/register.html">Register</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/register-2.html">Register 2</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/multi-step-login.html">Multi Step
+                                            Logins</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="user-pages/lock-screen.html">Lock Screen</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-group col-md-2">
+                                <p class="category-heading">Error Pages</p>
+                                <ul class="submenu-item">
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="error-pages/error-404.html">404</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link" href="error-pages/error-500.html">500</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-group col-md-3">
+                                <p class="category-heading">E-commerce</p>
+                                <ul class="submenu-item">
+                                    <li class="nav-item "><a class="nav-link"
+                                            href="general-pages/email-templates.html">Email Templates</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="ecommerce/invoice.html">Invoice</a>
+                                    </li>
+                                    <li class="nav-item "><a class="nav-link" href="ecommerce/invoice-2.html">Invoice
+                                            2</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="ecommerce/pricing.html">Pricing</a>
+                                    </li>
+                                    <li class="nav-item "><a class="nav-link"
+                                            href="ecommerce/product-catalogue.html">Product Catalogue</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="ecommerce/project-list.html">Project
+                                            List</a></li>
+                                    <li class="nav-item "><a class="nav-link" href="ecommerce/orders.html">Orders</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-group col-md-5">
+                                <p class="category-heading">General</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="submenu-item">
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/search-results.html">Search
+                                                    Results</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/profile.html">Profile</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/timeline.html">Timeline</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/news-grid.html">News
+                                                    Grid</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/portfolio.html">Portfolio</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/faq.html">FAQ</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/faq-2.html">FAQ 2</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/blank-page.html">Blank
+                                                    Page</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/landing-page.html">Landing
+                                                    Page</a>
+                                            </li>
+                                            <li class="nav-item ">
+                                                <a class="nav-link" href="general-pages/user-listing.html">User
+                                                    Listing</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li> -->
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-webpack menu-icon"></i>
+                        <span class="menu-title">Gestion Credit</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/voirRetard']">Voir les
+                                    retards par Ps</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/simulerCredit']">Simuler un
+                                    Crédit</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/stepCredit']">
+                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <span class="menu-title">Add Credit</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/reclamation']">
+                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <span class="menu-title">Reclamation</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

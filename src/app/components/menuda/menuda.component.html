@@ -1,0 +1,117 @@
+<div class="horizontal-menu">
+    <app-topbar [user]="user"></app-topbar>
+    <nav class="bottom-navbar">
+        <div class="container">
+            <ul class="nav page-navigation">
+                <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/']">
+                        <i class="mdi mdi-home menu-icon"></i>
+                        <span class="menu-title">Tableau de Bord </span>
+                    </a>
+                </li>
+
+                <li class="nav-item mega-menu ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-account menu-icon"></i>
+                        <span class="menu-title">Liste Agences</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <div class="col-group-wrapper row">
+                            <div class="col-group col-md-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="category-heading">Adhesion</p>
+                                        <div class="submenu-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <ul>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/personnep']">Personne Physique</a></li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/personnem']">Personne Morale</a></li>
+
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-group col-md-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="category-heading">Ouverture Compte</p>
+                                        <div class="submenu-item">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <ul>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/comptep']">Personne Physique </a></li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/comptem']">Personne Morale</a>
+                                                        </li>
+                                                        <li class="nav-item "><a class="nav-link"
+                                                                [routerLink]="['/liermembre']">Lier Membre</a></li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-clipboard-text menu-icon"></i>
+                        <span class="menu-title">Gestion des Tacherons</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/addTacheron']">
+                                    Souscrire</a></li>
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/listTacheron']">
+                                    Liste</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-webpack menu-icon"></i>
+                        <span class="menu-title">Gestion Credit</span>
+                        <i class="menu-arrow"></i></a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/voirRetard']">Voir les
+                                    retards par Ps</a>
+                            </li>
+                            <li class="nav-item "><a class="nav-link" [routerLink]="['/simulerCredit']">Simuler un
+                                    Crédit</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/stepCredit']">
+                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <span class="menu-title">Add Credit</span></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/reclamation']">
+                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <span class="menu-title">Reclamation</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

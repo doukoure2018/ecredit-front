@@ -1,0 +1,49 @@
+<div class="container-scroller">
+    <app-menu></app-menu>
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title"> Form wizard </h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <form [formGroup]="confirmedCreditForm">
+                                    <ng-template matStepLabel>Confirmation de Crédit</ng-template>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Type d'Activité</mat-label>
+                                                <textarea matInput formControlName="typeActivite"
+                                                    placeholder="Décrire le type d'activité" rows="3"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Montant</mat-label>
+                                                <input matInput type="number" formControlName="montant"
+                                                    placeholder="Saisir Montant" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button mat-raised-button matStepperNext>Suivant</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

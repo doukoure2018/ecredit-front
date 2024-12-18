@@ -1,0 +1,7 @@
+export enum RoleState {
+  ROLE_USER = 'ROLE_USER',
+  ROLE_DA = 'ROLE_DA',
+  ROLE_RA = 'ROLE_RA',
+  ROLE_MANAGER = 'ROLE_MANAGER',
+  ROLE_ADMIN = 'ROLE_ADMIN',
+}

@@ -1,0 +1,94 @@
+<ng-container *ngIf="confirmedCreditState$ | async as state">
+    <div class="container-scroller">
+        <app-menu></app-menu>
+        <div class="container-fluid page-body-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title"> Confirmation de Crédit </h3>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Confirmation Credit</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form [formGroup]="confirmedCreditForm">
+                                        <!-- Reference Credit -->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Type d'Activité</mat-label>
+                                                    <textarea matInput formControlName="typeActivite"
+                                                        placeholder="Décrire le type d'activité" rows="3"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Montant</mat-label>
+                                                    <input matInput type="number" formControlName="montant"
+                                                        placeholder="Saisir Montant" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="(isDisabled$ | async)" style="display: flex; gap: 15px;">
+                                            <!-- Button 1: Enregister -->
+                                            <button mat-raised-button color="warn"
+                                                [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)"
+                                                type="button" (click)="onSave()" class="btn btn-primary">
+                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                                <span *ngIf="isLoading$ | async">Loading...</span>
+                                                <span *ngIf="!(isLoading$ | async)">Enregister</span>
+                                            </button>
+
+                                            <!-- Button 2: Enregister Puis Continuer -->
+                                            <button mat-raised-button color="primary"
+                                                [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)"
+                                                type="button" (click)="onSaveAndContinue()" class="btn btn-primary">
+                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                                <span *ngIf="isLoading$ | async">Loading...</span>
+                                                <span *ngIf="!(isLoading$ | async)">Enregister Puis Continuer</span>
+                                            </button>
+                                        </div>
+
+                                        <div *ngIf="!(isDisabled$ | async)"
+                                            style="display: flex; flex-direction: column; gap: 15px; align-items: start;">
+                                            <!-- Button 1: Enregister -->
+                                            <button mat-raised-button color="warn"
+                                                [disabled]="state.dataState === DataState.LOADING" type="button"
+                                                (click)="updateData()" class="btn btn-primary" style="width: auto;">
+                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                                <span *ngIf="isLoading$ | async">Loading...</span>
+                                                <span *ngIf="!(isLoading$ | async)">Mise à jour</span>
+                                            </button>
+
+                                            <!-- Button 2: Enregister Puis Continuer -->
+                                            <button mat-raised-button color="primary"
+                                                [disabled]="state.dataState === DataState.LOADING" type="button"
+                                                (click)="goNext()" class="btn btn-primary" style="width: auto;">
+                                                <span>
+                                                    Suivant
+                                                </span>
+                                            </button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</ng-container>

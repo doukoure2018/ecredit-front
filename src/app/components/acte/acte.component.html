@@ -1,0 +1,54 @@
+<ng-container *ngIf="fileUploadState$ | async as state">
+
+    <h6 class="card-title">Téléverser tous documents pour la garanties </h6>
+
+    <div class="form-group d-inline-flex align-items-center">
+        <input class="form-control mb-2 mr-sm-4" type="file" (change)="onFileSelected($event)" multiple />
+        <button class="btn btn-primary mb-2" (click)="uploadFiles()">
+            <span *ngIf="isLoading$ | async" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                style="margin-right: 5px"></span>
+            <span *ngIf="isLoading$ | async">Loading...</span>
+            <span *ngIf="!(isLoading$ | async)">Televersé</span>
+        </button>
+    </div>
+
+    <div id="lightgallery-without-thumb" class="row lightGallery">
+
+        <ng-container *ngIf="state.appData?.data?.actes; else noActes">
+            <div *ngFor="let acte of state.appData?.data?.actes" class="col-md-4"
+                style="margin-bottom: 15px; position: relative;">
+                <!-- Image Display -->
+                <ng-container *ngIf="isImage(acte.acteUrl!)">
+                    <a [href]="acte.acteUrl" class="image-tile" target="_blank">
+                        <img [src]="acte.acteUrl" alt="Image Acte" class="img-fluid" />
+                    </a>
+                    <!-- Delete Icon -->
+                    <button mat-icon-button class="delete-icon red-icon" (click)="deleteActe(acte.id!)"
+                        aria-label="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </ng-container>
+                <!-- PDF Display -->
+                <ng-container *ngIf="isPDF(acte.acteUrl!)">
+                    <a [href]="acte.acteUrl" target="_blank" class="pdf-tile">
+                        <div
+                            style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa;">
+                            <mat-icon style="font-size: 48px; color: #d32f2f;">picture_as_pdf</mat-icon>
+                            <p>{{ 'Voir le Document' }}</p>
+                        </div>
+                    </a>
+                    <!-- Delete Icon -->
+                    <button mat-icon-button class="delete-icon red-icon" (click)="deleteActe(acte.id!)"
+                        aria-label="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+
+                </ng-container>
+            </div>
+        </ng-container>
+
+
+        <ng-template #noActes>
+            <p>Aucun acte disponible</p>
+        </ng-template>
+    </div>

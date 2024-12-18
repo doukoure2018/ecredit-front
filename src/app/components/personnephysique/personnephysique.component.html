@@ -1,0 +1,466 @@
+<ng-container *ngIf="personnepState$ | async as state">
+    <div class="container-scroller">
+        <app-menu></app-menu>
+        <div class="container-fluid page-body-wrapper">
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title"> Adhesion Personne Physique </h3>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Formulaire</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Adhesion Personne Physique</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 grid-margin">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- <h4 class="card-title">...</h4> -->
+                                    <form #individuelForm="ngForm" (submit)="addPersonneP(individuelForm)">
+                                        <input type="hidden" name="user_id" [ngModel]="state.appData?.data?.user?.id">
+                                        <p class="card-description">Information Personnelle </p>
+                                        <div class="row">
+                                            <!-- Nom -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nom</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="text" name="nom" placeholder="Saisir le nom" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Prénom -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Prénom</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="text" name="prenom"
+                                                        placeholder="Saisir le prénom" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Date de Naissance -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Date de Naissance</mat-label>
+                                                    <input matInput [matDatepicker]="dateNaissancePicker"
+                                                        [(ngModel)]="dateNaissance"
+                                                        (ngModelChange)="formatDateNaissance($event)"
+                                                        name="dateNaissance" placeholder="Choisissez une date">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="dateNaissancePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #dateNaissancePicker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Lieux Naissance -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Lieux Naissance</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="text" name="lieuxNaissance"
+                                                        placeholder="Lieu de naissance" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Nationalité -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nationalité</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="text" name="nationalite"
+                                                        placeholder="Nationalité" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Genre -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Genre</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="sexe">
+                                                        <mat-option value="M">Masculin</mat-option>
+                                                        <mat-option value="F">Féminin</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Contact -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Contact</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="number" name="telephone"
+                                                        placeholder="Saisir le contact" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Contact2 -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Contact2</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="number" name="telephone2"
+                                                        placeholder="Saisir le contact secondaire" />
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Catégorie</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="catMembre">
+                                                        <mat-option
+                                                            *ngFor="let categorie of state.appData?.data?.categorieClient"
+                                                            [value]="categorie.categorieClientePKId?.cat_CLIENTE">
+                                                            {{ categorie.des_CATEGORIA }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <p class="card-description">Nombre de Personne En Charge</p>
+                                        <div class="row">
+                                            <!-- Conjoint(e) -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Conjoint(e)</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel type="text" name="conjoint"
+                                                        placeholder="Nom du conjoint(e)" />
+                                                </mat-form-field>
+                                            </div>
+                                            <!-- Nombre Enfant -->
+                                            <div class="col-md-3">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nombre Enfant</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="number" name="nbreEnfant" ngModel />
+                                                </mat-form-field>
+                                            </div>
+                                            <!-- Nombre Parent -->
+                                            <div class="col-md-2">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nombre Parent</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="number" name="nbreParent" ngModel />
+                                                </mat-form-field>
+                                            </div>
+                                            <!-- Autre Charge -->
+                                            <div class="col-md-3">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Autre Charge</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="number" name="nbreAutre" ngModel />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Nom Père -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nom Père</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="nomPere" ngModel placeholder="Nom du père" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Nom Mère -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nom Mère</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="nomMere" ngModel
+                                                        placeholder="Nom de la mère" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Nom Bénéficiaire -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nom Bénéficiaire</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="nomParent" ngModel
+                                                        placeholder="Nom du bénéficiaire" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Lien de Parenté -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Lien de Parenté</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="lienParente" ngModel
+                                                        placeholder="Lien de parenté" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <p class="card-description">Information sur l'activité</p>
+                                        <div class="row">
+                                            <!-- Profession -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Profession</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="profession">
+                                                        <mat-option
+                                                            *ngFor="let profession of state.appData?.data?.profession"
+                                                            [value]="profession.professionPKId?.cod_PROFESION">
+                                                            {{ profession.des_PROFESION }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Activité -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Activité</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="activite">
+                                                        <mat-option
+                                                            *ngFor="let activite of state.appData?.data?.activite"
+                                                            [value]="activite.id">
+                                                            {{ activite.des_ACTIVIDAD }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Quartier -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Quartier</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="quartier" ngModel
+                                                        placeholder="Saisir le quartier" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Type Pièce -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Type Pièce</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="typePiece">
+                                                        <mat-option *ngFor="let type of state.appData?.data?.typeId"
+                                                            [value]="type.typeIdPKId?.cod_TIPO_ID">
+                                                            {{ type.des_TIPO_ID }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Num Pièce</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="text" name="numeroPiece" ngModel
+                                                        placeholder="Numero Id" />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Expiration Date -->
+                                            <div class="col-md-4">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Expiration Date</mat-label>
+                                                    <input matInput [matDatepicker]="expirationDatePicker"
+                                                        [(ngModel)]="expirationDate"
+                                                        (ngModelChange)="formatExpirationDate($event)"
+                                                        name="expirationDate" placeholder="Choisissez une date">
+                                                    <mat-datepicker-toggle matSuffix
+                                                        [for]="expirationDatePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #expirationDatePicker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Prestataire -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Prestataire</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="prestataire">
+                                                        <mat-option
+                                                            *ngFor="let prestataire of state.appData?.data?.prestataire"
+                                                            [value]="prestataire.prestatairePKId?.cod_PROVEEDOR">
+                                                            {{ prestataire.des_PROVEEDOR }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Secteur d'activité -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Secteur d'activité</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="secteur">
+                                                        <mat-option *ngFor="let secteur of state.appData?.data?.secteur"
+                                                            [value]="secteur.sectorEconomicoPKId?.cod_SECTOR">
+                                                            {{ secteur.des_SECTOR }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Typ Habitation -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Type Habitation</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="typeHabitation">
+                                                        <mat-option value="PO">PROPRIETAIRE</mat-option>
+                                                        <mat-option value="AL">LOCATAIRE</mat-option>
+                                                        <mat-option value="CU">CONCIERGE</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Nbre Année -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nombre d'Années</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="number" ngModel name="nbreAnneeH" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Type Entreprise -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Type Entreprise</mat-label>
+                                                    <mat-select [disabled]="state.dataState === DataState.LOADING"
+                                                        ngModel name="typeEntreprise">
+                                                        <mat-option value="PO">PROPRIETAIRE</mat-option>
+                                                        <mat-option value="AL">LOCATAIRE</mat-option>
+                                                        <mat-option value="CU">CONCIERGE</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Nbre Année -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Nombre d'Années</mat-label>
+                                                    <input matInput [disabled]="state.dataState === DataState.LOADING"
+                                                        type="number" ngModel name="nbreAnnee" />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <!-- Cotisation Input -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Cotisation</mat-label>
+                                                    <input matInput [disabled]="state.dataState == DataState.LOADING"
+                                                        type="text" name="cotisation" ngModel />
+                                                </mat-form-field>
+                                            </div>
+
+                                            <!-- Droit d'entrée Input -->
+                                            <div class="col-md-6">
+                                                <mat-form-field appearance="outline" class="full-width">
+                                                    <mat-label>Droit d'entrée</mat-label>
+                                                    <input matInput [disabled]="state.dataState == DataState.LOADING"
+                                                        type="text" name="droitEntree" ngModel />
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <p class="card-description">Information sur l'adresse</p>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <!-- Ville Select -->
+                                                            <div class="col">
+                                                                <mat-form-field appearance="outline" class="full-width">
+                                                                    <mat-label>Ville</mat-label>
+                                                                    <mat-select
+                                                                        [disabled]="state.dataState == DataState.LOADING"
+                                                                        ngModel name="ville"
+                                                                        (selectionChange)="onProvinceChange($event.value)">
+                                                                        <mat-option
+                                                                            *ngFor="let district of state.appData?.data?.provincia"
+                                                                            [value]="district.provinciasPKId?.cod_PROVINCIA">
+                                                                            {{ district.des_PROVINCIA }}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+
+                                                            <!-- Commune Select -->
+                                                            <div class="col">
+                                                                <mat-form-field appearance="outline" class="full-width">
+                                                                    <mat-label>Commune</mat-label>
+                                                                    <mat-select
+                                                                        [disabled]="state.dataState == DataState.LOADING"
+                                                                        ngModel name="codCanton"
+                                                                        (selectionChange)="onCantonChange($event.value)">
+                                                                        <mat-option *ngFor="let canton of cantons"
+                                                                            [value]="canton.cantonesPKId?.codCanton">
+                                                                            {{ canton.des_CANTON }}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+
+                                                            <!-- District Select -->
+                                                            <div class="col">
+                                                                <mat-form-field appearance="outline" class="full-width">
+                                                                    <mat-label>District</mat-label>
+                                                                    <mat-select
+                                                                        [disabled]="state.dataState == DataState.LOADING"
+                                                                        ngModel name="district">
+                                                                        <mat-option *ngFor="let district of districts"
+                                                                            [value]="district.codDistrito">
+                                                                            {{ district.des_DISTRITO }}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button mat-button [disabled]="state.dataState == DataState.LOADING 
+                                            || individuelForm.pristine 
+                                            || individuelForm.invalid" type="submit" class="btn btn-primary">
+                                            <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                            <span *ngIf="isLoading$ | async">Loading...</span>
+                                            <span *ngIf="!(isLoading$ | async)">Enregister</span>
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-footer></app-footer>
+        </div>
+    </div>
+</ng-container>

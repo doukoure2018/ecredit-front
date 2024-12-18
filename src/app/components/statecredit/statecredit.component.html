@@ -1,0 +1,12 @@
+<div *ngIf="garantieMatState?.statecredit" style="display: flex; gap: 15px;">
+    <!-- Button: Retour -->
+    <button mat-raised-button color="warn" type="button" (click)="goBack()" class="btn btn-primary">
+        <span>Retour</span>
+    </button>
+
+    <!-- Button: Suivant -->
+    <button mat-raised-button color="primary" [disabled]="isLoading$ | async" (click)="confirmedCredit()">
+        <span *ngIf="isLoading$ | async">Loading...</span>
+        <span *ngIf="!(isLoading$ | async)">Confirmer Credit</span>
+    </button>
+</div>

@@ -1,0 +1,46 @@
+<ng-container *ngIf="localisationState$ | async as state">
+    <p class="card-description">Information sur iterinaire de l'associe et de la personne Caution</p>
+    <form [formGroup]="localisationForm">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Iterinaire de l'associé </mat-label>
+                    <input matInput formControlName="it_ass" placeholder="Iterinaire de l'associé" />
+                    <mat-error *ngIf="localisationForm.get('it_ass')?.invalid">Champ
+                        requis</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Iterinaire de la Personne Caution</mat-label>
+                    <input matInput formControlName="it_pc" placeholder="Définir iterinaire de la Personne Caution" />
+                    <mat-error *ngIf="localisationForm.get('it_pc')?.invalid">Champ
+                        requis
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div *ngIf="(isDisabled$ | async)" style="display: flex; gap: 15px;">
+            <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)
+                || localisationForm.invalid" type="button" (click)="onSave()" class="btn btn-primary">
+                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                    style="margin-right: 5px"></span>
+                <span *ngIf="isLoading$ | async">Loading...</span>
+                <span *ngIf="!(isLoading$ | async)">Enregister</span>
+            </button>
+        </div>
+
+        <div *ngIf="!(isDisabled$ | async)"
+            style="display: flex; flex-direction: column; gap: 15px; align-items: start;">
+            <!-- Button 1: Enregister -->
+            <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING" type="button"
+                (click)="updateData()" class="btn btn-primary" style="width: auto;">
+                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                    style="margin-right: 5px"></span>
+                <span *ngIf="isLoading$ | async">Loading...</span>
+                <span *ngIf="!(isLoading$ | async)">Mise à jour</span>
+            </button>
+        </div>
+    </form>
+</ng-container>

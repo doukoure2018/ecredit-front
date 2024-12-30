@@ -138,10 +138,6 @@ export class GarantieComponent implements OnInit {
     console.log('this is updata information');
   }
 
-  public goNext(): void {
-    this.router.navigate([`/garanties/${this.referenceId}`]);
-  }
-
   public goBack(): void {
     this.router.navigate([`/vente/${this.referenceId}`]);
   }

@@ -18,6 +18,7 @@ import { FrequenceComponent } from './components/frequence/frequence.component';
 import { GarantieComponent } from './components/garantie/garantie.component';
 import { HomedaComponent } from './components/homeda/homeda.component';
 import { HomeagentComponent } from './components/homeagent/homeagent.component';
+import { DetailcreditComponent } from './components/detailcredit/detailcredit.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,11 @@ const routes: Routes = [
   {
     path: 'stepcreditIndividuel/:referencedcredit',
     component: StepcreditComponent,
+    canActivate: [AuthenticationGuard],
+  },
+  {
+    path: 'detailcredit/:referencedcredit/:codMembre',
+    component: DetailcreditComponent,
     canActivate: [AuthenticationGuard],
   },
 

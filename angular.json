@@ -37,6 +37,7 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css",
               "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/plugins/@mdi/font/css/materialdesignicons.min.css",
@@ -45,9 +46,9 @@
               "src/assets/app/css/app.css"
             ],
             "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "src/assets/app/js/app.js",
               "src/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js",
-
               "src/assets/plugins/jquery-steps/jquery.steps.min.js",
               "src/assets/plugins/jquery-validation/jquery.validate.min.js",
               "src/assets/js/off-canvas.js",

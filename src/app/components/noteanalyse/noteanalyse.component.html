@@ -1,0 +1,55 @@
+<div *ngIf="noteAnalyseState$ | async as state" class="container-scroller">
+    <h5 class="mt-0">Appreciation sur l'analyse </h5>
+    <form [formGroup]="noteAnalyseForm">
+        <div class="row">
+            <!-- Libelle Garantie Materielle -->
+            <div class="col-md-8">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Motif de la Note</mat-label>
+                    <textarea matInput formControlName="motif"
+                        placeholder="Décrire brièvement le motif de votre Appreciation" rows="1"></textarea>
+                </mat-form-field>
+            </div>
+            <!-- Valeur -->
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Note </mat-label>
+                    <mat-select formControlName="note" placeholder="Quelle est la Note ?">
+                        <mat-option *ngFor="let option of valeurs" [value]="option">
+                            {{ option }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="button-group">
+            <div *ngIf="isDisabled$ | async">
+                <button mat-raised-button color="primary" [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)
+                                                                        || noteAnalyseForm.invalid" type="button"
+                    (click)="onSave()" class="btn btn-primary">
+                    <ng-container *ngIf="isLoading$ | async">
+                        <span class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                            style="margin-right: 5px"></span>
+                        <span>Loading...</span>
+                    </ng-container>
+                    <ng-container *ngIf="!(isLoading$ | async)">Enregister la
+                        Note</ng-container>
+                </button>
+            </div>
+            <div *ngIf="!(isDisabled$ | async)">
+                <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING" type="button"
+                    (click)="updateData()" class="btn btn-primary" style="width: auto">
+                    <ng-container *ngIf="isLoading$ | async">
+                        <span class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                            style="margin-right: 5px"></span>
+                        <span>Loading...</span>
+                    </ng-container>
+                    <ng-container *ngIf="!(isLoading$ | async)">Modifier la
+                        note</ng-container>
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>

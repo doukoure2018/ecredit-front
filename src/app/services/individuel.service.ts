@@ -4,20 +4,28 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import {
   ActeState,
+  AppreciationState,
   CantonState,
   ChargeIndState,
   ConfirmedCreditIndState,
+  CreditState,
   CustomHttpResponse,
   DemandeState,
+  DetailCreditIndState,
   DistrictState,
   FrequenceState,
   GarantieState,
   HomeState,
   LocalisationState,
+  NoteAnalyseState,
+  NoteGarantieState,
+  NoteProfileState,
+  NoteviewCreditState,
   PersonneCautionState,
   PersonnePState,
   PetitCreditState,
   ProduitIndState,
+  ResultNoteState,
 } from '../interfaces/appstates';
 import { Individuel } from '../interfaces/individuel';
 import { Credit } from '../interfaces/credit';
@@ -29,6 +37,11 @@ import { Frequence } from '../interfaces/frequence';
 import { GarantieMatInd } from '../interfaces/garantiemat-ind';
 import { Personnecaution } from '../interfaces/personne-caution';
 import { Localisation } from '../interfaces/localisation';
+import { NoteProfile } from '../interfaces/note-profile';
+import { NoteAnalyse } from '../interfaces/note-analyse';
+import { NoteGarantie } from '../interfaces/note-garantie';
+import { Appreciation } from '../interfaces/appreciation';
+import { ResultNote } from '../interfaces/result-note';
 
 @Injectable({ providedIn: 'root' })
 export class DemandeIndividuelService {
@@ -404,6 +417,43 @@ export class DemandeIndividuelService {
         }
       )
       .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Information detaillee de credit
+   *  Pour un membre
+   * @param referenceCredit
+   * @param codMembre
+   * @returns
+   */
+  detailCreditCredit$ = (
+    referenceCredit: string,
+    codMembre: string
+  ): Observable<CustomHttpResponse<DetailCreditIndState>> =>
+    this.http
+      .get<CustomHttpResponse<DetailCreditIndState>>(
+        `${this.server}/${referenceCredit}/${codMembre}/detailCredit`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   * Display the whole note for the credit
+   * @param referenceCredit
+   * @returns
+   */
+  noteviewCredit$ = (
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<NoteviewCreditState>> =>
+    this.http
+      .get<CustomHttpResponse<NoteviewCreditState>>(
+        `${this.server}/${referenceCredit}/noteviewCredit`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
   /**
    * Adhesion personne Physique
    * @returns
@@ -449,6 +499,21 @@ export class DemandeIndividuelService {
     );
 
   /**
+   * Mise a jour du status pour le credit par l'agent de credit
+   * @param referenceCredit
+   * @returns
+   */
+  updateStatutCreditByAgent$ = (referenceCredit: string) =>
+    <Observable<CustomHttpResponse<String>>>(
+      this.http
+        .patch<CustomHttpResponse<String>>(
+          `${this.server}/${referenceCredit}/statusByAgent`,
+          {}
+        )
+        .pipe(tap(console.log), catchError(this.handleError))
+    );
+
+  /**
    *  Get all Cantones by CodProvinces
    * @param codProvincia
    * @returns
@@ -484,6 +549,186 @@ export class DemandeIndividuelService {
         catchError(this.handleError)
       );
 
+  /**
+   * Note profile
+   * @param referenceCredit
+   * @returns
+   */
+  newNoteProfile$ = (
+    referenceCredit: string,
+    newNoteCredit: string
+  ): Observable<CustomHttpResponse<NoteProfileState>> =>
+    this.http
+      .get<CustomHttpResponse<NoteProfileState>>(
+        `${this.server}/${referenceCredit}/newNoteCredit?statutNote=${newNoteCredit}`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   *  Ajout note profile
+   * @param noteprofileForm
+   * @returns
+   */
+  addProfile$ = (noteprofileForm: NoteProfile) =>
+    <Observable<CustomHttpResponse<NoteProfileState>>>this.http
+      .post<CustomHttpResponse<NoteProfileState>>(
+        `${this.server}/addNoteCredit`,
+        noteprofileForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Note Analyse
+   * @param referenceCredit
+   * @returns
+   */
+  newNoteAnalyse$ = (
+    referenceCredit: string,
+    newNoteCredit: string
+  ): Observable<CustomHttpResponse<NoteAnalyseState>> =>
+    this.http
+      .get<CustomHttpResponse<NoteAnalyseState>>(
+        `${this.server}/${referenceCredit}/newNoteAnalyse?statutNote=${newNoteCredit}`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   *  Ajout Note analyse
+   * @param noteanalyseForm
+   * @returns
+   */
+  addNoteAnalyse$ = (noteanalyseForm: NoteAnalyse) =>
+    <Observable<CustomHttpResponse<NoteAnalyseState>>>this.http
+      .post<CustomHttpResponse<NoteAnalyseState>>(
+        `${this.server}/addNoteAnalyse`,
+        noteanalyseForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Note Garantie
+   * @param referenceCredit
+   * @returns
+   */
+  newNoteGarantie$ = (
+    referenceCredit: string,
+    newNoteCredit: string
+  ): Observable<CustomHttpResponse<NoteGarantieState>> =>
+    this.http
+      .get<CustomHttpResponse<NoteGarantieState>>(
+        `${this.server}/${referenceCredit}/newNoteGarantie?statutNote=${newNoteCredit}`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   *  Ajout Note Garantie
+   * @param notegarantieForm
+   * @returns
+   */
+  addNoteGarantie$ = (notegarantieForm: NoteGarantie) =>
+    <Observable<CustomHttpResponse<NoteGarantieState>>>this.http
+      .post<CustomHttpResponse<NoteGarantieState>>(
+        `${this.server}/addNoteGarantie`,
+        notegarantieForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Appreciation DA
+   * @param referenceCredit
+   * @returns
+   */
+  newAppreciation$ = (
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<AppreciationState>> =>
+    this.http
+      .get<CustomHttpResponse<AppreciationState>>(
+        `${this.server}/${referenceCredit}/newAppreciation`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   *  Ajout Nouvelle Appreciation
+   * @param appreciationForm
+   * @returns
+   */
+  addAppreciation$ = (appreciationForm: Appreciation) =>
+    <Observable<CustomHttpResponse<AppreciationState>>>this.http
+      .post<CustomHttpResponse<AppreciationState>>(
+        `${this.server}/addAppreciation`,
+        appreciationForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * ResultNote
+   * @param referenceCredit
+   * @returns
+   */
+  newResultNote$ = (
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<ResultNoteState>> =>
+    this.http
+      .get<CustomHttpResponse<ResultNoteState>>(
+        `${this.server}/${referenceCredit}/resultNote`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   *  Ajout ResultNote
+   * @param resultnoteForm
+   * @returns
+   */
+  addResultNote$ = (resultnoteForm: ResultNote) =>
+    <Observable<CustomHttpResponse<ResultNoteState>>>this.http
+      .post<CustomHttpResponse<ResultNoteState>>(
+        `${this.server}/addResultNote`,
+        resultnoteForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Information Credit
+   * @param referenceCredit
+   * @returns
+   */
+  creditView$ = (): Observable<CustomHttpResponse<CreditState>> =>
+    this.http
+      .get<CustomHttpResponse<CreditState>>(`${this.server}/creditView`)
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
   /**
    * Adhesion Personne Physique
    * @param individuelForm

@@ -1,6 +1,7 @@
 import { DataState } from '../enum/datastate.enum';
 import { ActeInd } from './acte-ind';
 import { Agence } from './agence';
+import { Appreciation } from './appreciation';
 import { ChargesInd } from './charge-ind';
 import { ConfirmedCreditInd } from './confirmed-credit-ind';
 import { Credit } from './credit';
@@ -21,10 +22,14 @@ import {
   TypeId,
 } from './individuel';
 import { Localisation } from './localisation';
+import { NoteAnalyse } from './note-analyse';
+import { NoteGarantie } from './note-garantie';
+import { NoteProfile } from './note-profile';
 import { Personnecaution } from './personne-caution';
 import { PetitCredit } from './petit-credit';
 import { Pointvente } from './pointvente';
 import { ProduitInd } from './produit-ind';
+import { ResultNote } from './result-note';
 import { Role } from './role';
 import { StateDemandeIndividuel } from './state-demande-individuel';
 import { User } from './user';
@@ -137,4 +142,54 @@ export interface PersonneCautionState {
 export interface LocalisationState {
   user?: User;
   localisation?: Localisation;
+}
+
+// Information detaillee de tous les credits
+export interface DetailCreditIndState {
+  user?: User;
+  individuel?: Individuel;
+  petitcredit?: PetitCredit;
+  confirmedCredit?: ConfirmedCreditInd;
+  chargeind?: ChargesInd[];
+  produitInd?: ProduitInd[];
+  garantieMat?: GarantieMatInd;
+  garantiepersonnecaution?: Personnecaution[];
+  localisation?: Localisation;
+  actes?: ActeInd[];
+  resultNote?: string;
+  appreciation?: Appreciation;
+}
+
+export interface NoteviewCreditState {
+  user?: User;
+  noteProfile?: NoteProfile;
+  noteAnalyse?: NoteAnalyse;
+  noteGarantie?: NoteGarantie;
+  appreciation?: Appreciation;
+}
+
+export interface NoteProfileState {
+  noteProfile?: NoteProfile;
+}
+
+export interface NoteAnalyseState {
+  noteAnalyse?: NoteAnalyse;
+}
+
+export interface NoteGarantieState {
+  noteGarantie?: NoteGarantie;
+}
+
+export interface AppreciationState {
+  user?: User;
+  appreciation?: Appreciation;
+}
+
+export interface ResultNoteState {
+  user?: User;
+  resultnote?: ResultNote;
+}
+
+export interface CreditState {
+  credit?: Credit[];
 }

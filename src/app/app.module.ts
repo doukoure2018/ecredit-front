@@ -34,7 +34,6 @@ import { DemandeindividuelComponent } from './components/demandeindividuel/deman
 import { ListedemandeindividuelComponent } from './components/listedemandeindividuel/listedemandeindividuel.component';
 import { MaterialsModule } from './materials/materials.module';
 import { PetitcreditComponent } from './components/petitcredit/petitcredit.component';
-import { AnalysecreditComponent } from './components/analysecredit/analysecredit.component';
 import { ChargeComponent } from './components/charge/charge.component';
 import { VenteComponent } from './components/vente/vente.component';
 import { FrequenceComponent } from './components/frequence/frequence.component';
@@ -46,6 +45,15 @@ import { StatecreditComponent } from './components/statecredit/statecredit.compo
 import { HomedaComponent } from './components/homeda/homeda.component';
 import { HomeagentComponent } from './components/homeagent/homeagent.component';
 import { MenudaComponent } from './components/menuda/menuda.component';
+import { DetailcreditComponent } from './components/detailcredit/detailcredit.component';
+import { NoteprofileComponent } from './components/noteprofile/noteprofile.component';
+import { NoteanalyseComponent } from './components/noteanalyse/noteanalyse.component';
+import { NotegarantieComponent } from './components/notegarantie/notegarantie.component';
+import { AppreciationComponent } from './components/appreciation/appreciation.component';
+import { ResultnoteComponent } from './components/resultnote/resultnote.component';
+import { CreditviewComponent } from './components/creditview/creditview.component';
+import { NoteviewComponent } from './components/noteview/noteview.component';
+import { StatecreditconfirmedComponent } from './components/statecreditconfirmed/statecreditconfirmed.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +73,6 @@ import { MenudaComponent } from './components/menuda/menuda.component';
     DemandeindividuelComponent,
     ListedemandeindividuelComponent,
     PetitcreditComponent,
-    AnalysecreditComponent,
     ChargeComponent,
     VenteComponent,
     FrequenceComponent,
@@ -77,6 +84,15 @@ import { MenudaComponent } from './components/menuda/menuda.component';
     HomedaComponent,
     HomeagentComponent,
     MenudaComponent,
+    DetailcreditComponent,
+    NoteprofileComponent,
+    NoteanalyseComponent,
+    NotegarantieComponent,
+    AppreciationComponent,
+    ResultnoteComponent,
+    CreditviewComponent,
+    NoteviewComponent,
+    StatecreditconfirmedComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, MaterialsModule],
   providers: [

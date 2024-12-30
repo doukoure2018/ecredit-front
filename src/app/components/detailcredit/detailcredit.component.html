@@ -1,0 +1,538 @@
+<div *ngIf="detailCreditIndState$ | async as state" class="container-scroller">
+    <ng-container *ngIf="state.appData?.data?.user as user">
+        <ng-container [ngSwitch]="user.roleName">
+            <app-menu *ngSwitchCase="'ROLE_USER'" [user]="user"></app-menu>
+            <app-menuda *ngSwitchCase="'ROLE_DA'" [user]="user"></app-menuda>
+        </ng-container>
+    </ng-container>
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="col-md-12 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Details des Informations de crédits pour
+                                            <strong style="text-transform: uppercase;">
+                                                {{ state.appData?.data?.individuel?.nom }}
+                                            </strong>
+                                            <strong style="text-transform: uppercase;">
+                                                {{ state.appData?.data?.individuel?.prenom }},
+                                            </strong>
+                                            <strong style="text-transform: uppercase;">
+                                                {{
+                                                state.appData?.data?.confirmedCredit?.typeActivite
+                                                }}:
+                                            </strong> <strong style="text-transform: uppercase;">
+                                                {{
+                                                state.appData?.data?.confirmedCredit?.montant
+                                                | number:'1.0-2'
+                                                }} GNF,
+                                            </strong>
+                                        </h4>
+                                        <br>
+                                        <ng-container *ngIf="state.appData?.data?.user as user">
+                                            <ng-container [ngSwitch]="user.roleName">
+                                                <ng-container
+                                                    *ngIf="state.appData?.data?.appreciation?.referenceCredit">
+                                                    <app-noteview *ngSwitchCase="'ROLE_USER'"
+                                                        [referenceCredit]="state.appData?.data?.appreciation?.referenceCredit"></app-noteview>
+                                                </ng-container>
+                                            </ng-container>
+                                        </ng-container>
+
+
+                                        <ul class="nav nav-pills nav-pills-success" id="pills-tab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill"
+                                                    href="#pills-home" role="tab" aria-controls="pills-home"
+                                                    aria-selected="true">Information Profile</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                                                    href="#pills-profile" role="tab" aria-controls="pills-profile"
+                                                    aria-selected="false">Analyse de Credit</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" id="pills-contact-tab" data-toggle="pill"
+                                                    href="#pills-contact" role="tab" aria-controls="pills-contact"
+                                                    aria-selected="false">Information Garanties</a>
+                                            </li>
+                                            <ng-container *ngIf="state.appData?.data?.user as user">
+                                                <ng-container [ngSwitch]="user.roleName">
+                                                    <li *ngSwitchCase="'ROLE_DA'" class="nav-item">
+                                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill"
+                                                            href="#pills-app" role="tab" aria-controls="pills-app"
+                                                            aria-selected="false">Appréciation Directeur Agence</a>
+                                                    </li>
+                                                    <li *ngSwitchCase="'ROLE_USER'" class="nav-item">
+                                                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill"
+                                                            href="#pills-app" role="tab" aria-controls="pills-app"
+                                                            aria-selected="false">Confirmation</a>
+                                                    </li>
+                                                </ng-container>
+                                            </ng-container>
+
+                                        </ul>
+                                        <div class="tab-content" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                                aria-labelledby="pills-home-tab">
+                                                <div class="media">
+                                                    <div class="media-body">
+                                                        <h5 class="mt-0">Information Signaletique du Client</h5>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nom et Prenom</th>
+                                                                        <th>Numero Membre</th>
+                                                                        <th>Contact</th>
+                                                                        <th>Type de Pièce</th>
+                                                                        <th>Numero Pièce</th>
+                                                                        <th>Type Credit </th>
+                                                                        <th>Montant </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{
+                                                                            state.appData?.data?.individuel?.nom
+                                                                            }}
+                                                                            {{
+                                                                            state.appData?.data?.individuel?.prenom
+                                                                            }}</td>
+                                                                        <td>{{
+                                                                            state.appData?.data?.individuel?.numeroMembre
+                                                                            }} </td>
+                                                                        <td>{{
+                                                                            state.appData?.data?.individuel?.telephone
+                                                                            }} </td>
+                                                                        <td>{{
+                                                                            state.appData?.data?.individuel?.typePiece
+                                                                            }} </td>
+                                                                        <td>{{
+                                                                            state.appData?.data?.individuel?.numeroPiece
+                                                                            }} </td>
+                                                                        <td> {{
+                                                                            state.appData?.data?.confirmedCredit?.typeActivite
+                                                                            }}
+                                                                        </td>
+                                                                        <td> {{
+                                                                            state.appData?.data?.confirmedCredit?.montant
+                                                                            | number:'1.0-2'
+                                                                            }} GNF
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <br>
+                                                        <ng-container *ngIf="state.appData?.data?.user as user">
+                                                            <ng-container [ngSwitch]="user.roleName">
+                                                                <ng-container
+                                                                    *ngIf="state.appData?.data?.garantieMat?.referenceCredit">
+                                                                    <app-noteprofile *ngSwitchCase="'ROLE_DA'"
+                                                                        [user]="state.appData?.data?.user"
+                                                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-noteprofile>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                                aria-labelledby="pills-profile-tab">
+                                                <div class="media">
+                                                    <div class="media-body">
+                                                        <h5 class="mt-0">Les Charges </h5>
+                                                        <div class="col-xm-12">
+                                                            <table mat-table [dataSource]="dataSourceCharge"
+                                                                class="table table-hover table-bordered table-striped">
+                                                                <ng-container matColumnDef="index">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> # </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let chargeInd; let i = index"
+                                                                        class="text-center">
+                                                                        {{ i + 1 }}
+                                                                    </td>
+
+                                                                </ng-container>
+                                                                <!-- Sent Date Column -->
+                                                                <ng-container matColumnDef="libele">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Libelé </th>
+                                                                    <td mat-cell *matCellDef="let chargeInd"
+                                                                        class="text-center">
+                                                                        {{ chargeInd.libele }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Message Column -->
+                                                                <ng-container matColumnDef="qte">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> Quantité
+                                                                    </th>
+                                                                    <td mat-cell *matCellDef="let chargeInd"
+                                                                        class="text-center">
+                                                                        {{ chargeInd.qte }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Status Column -->
+                                                                <ng-container matColumnDef="prixUnit">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> Prix
+                                                                        Unitaire </th>
+                                                                    <td mat-cell *matCellDef="let chargeInd"
+                                                                        class="text-center">
+                                                                        {{ chargeInd.prixUnit | number:'1.0-3' }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Mode Column -->
+                                                                <ng-container matColumnDef="prixTotal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Montant Total </th>
+                                                                    <td mat-cell *matCellDef="let chargeInd"
+                                                                        class="text-center">
+                                                                        {{ chargeInd.prixUnit * chargeInd.qte |
+                                                                        number:'1.0-3' }}
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <!-- Header and Row Definitions -->
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="displayedColumnsCharge"
+                                                                    class="table-primary"></tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; columns: displayedColumnsCharge;"
+                                                                    class="align-middle"></tr>
+                                                            </table>
+                                                        </div>
+                                                        <br><br>
+                                                        <h5 class="mt-0">Les Produits </h5>
+                                                        <div class="col-xm-12">
+                                                            <table mat-table [dataSource]="dataSourceProduit"
+                                                                class="table table-hover table-bordered table-striped">
+                                                                <ng-container matColumnDef="index">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> # </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let venteInd; let i = index"
+                                                                        class="text-center">
+                                                                        {{ i + 1 }}
+                                                                    </td>
+                                                                    <!-- Sent Date Column -->
+                                                                    <ng-container matColumnDef="libele">
+                                                                        <th mat-header-cell *matHeaderCellDef
+                                                                            class="text-center">
+                                                                            Libelé </th>
+                                                                        <td mat-cell *matCellDef="let venteInd"
+                                                                            class="text-center">
+                                                                            {{ venteInd.libele }}
+                                                                        </td>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- Message Column -->
+                                                                <ng-container matColumnDef="qte">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> Quantité
+                                                                    </th>
+                                                                    <td mat-cell *matCellDef="let venteInd"
+                                                                        class="text-center">
+                                                                        {{ venteInd.qte }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Status Column -->
+                                                                <ng-container matColumnDef="prixUnit">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> Prix
+                                                                        Unitaire </th>
+                                                                    <td mat-cell *matCellDef="let venteInd"
+                                                                        class="text-center">
+                                                                        {{ venteInd.prixUnit | number:'1.0-3' }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Mode Column -->
+                                                                <ng-container matColumnDef="prixTotal">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Montant Total </th>
+                                                                    <td mat-cell *matCellDef="let venteInd"
+                                                                        class="text-center">
+                                                                        {{ venteInd.prixUnit * venteInd.qte |
+                                                                        number:'1.0-3' }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Contact Column -->
+                                                                <!-- Mode Column -->
+                                                                <ng-container matColumnDef="observation">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Observation</th>
+                                                                    <td mat-cell *matCellDef="let venteInd"
+                                                                        class="text-center">
+                                                                        {{ venteInd.observation }}
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <!-- Header and Row Definitions -->
+                                                                <tr mat-header-row
+                                                                    *matHeaderRowDef="displayedColumnsProduit"
+                                                                    class="table-primary"></tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; columns: displayedColumnsProduit;"
+                                                                    class="align-middle"></tr>
+                                                            </table>
+                                                        </div>
+                                                        <br>
+                                                        <ng-container *ngIf="state.appData?.data?.user as user">
+                                                            <ng-container [ngSwitch]="user.roleName">
+                                                                <ng-container
+                                                                    *ngIf="state.appData?.data?.garantieMat?.referenceCredit">
+                                                                    <app-noteanalyse *ngSwitchCase="'ROLE_DA'"
+                                                                        [user]="state.appData?.data?.user"
+                                                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-noteanalyse>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-contact" role="tabpanel"
+                                                aria-labelledby="pills-contact-tab">
+                                                <div class="media">
+                                                    <div class="media-body">
+                                                        <h5 class="mt-0">Information sur la Garantie Materielle</h5>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Garantie</th>
+                                                                        <th>Valeur</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{
+                                                                            state.appData?.data?.garantieMat?.libele
+                                                                            }}
+                                                                        </td>
+
+                                                                        <td> {{
+                                                                            state.appData?.data?.garantieMat?.montant
+                                                                            | number:'1.0-2'
+                                                                            }} GNF
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <br>
+                                                        <h5 class="mt-0">Information sur les personnes cautions</h5>
+                                                        <div class="table-responsive">
+                                                            <table mat-table [dataSource]="dataSourcePersonneCaution"
+                                                                class="table table-hover table-bordered table-striped">
+                                                                <ng-container matColumnDef="index">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> # </th>
+                                                                    <td mat-cell
+                                                                        *matCellDef="let personnecaution; let i = index"
+                                                                        class="text-center">
+                                                                        {{ i + 1 }}
+                                                                    </td>
+                                                                    <!-- Sent Date Column -->
+                                                                    <ng-container matColumnDef="nom">
+                                                                        <th mat-header-cell *matHeaderCellDef
+                                                                            class="text-center">
+                                                                            Nom </th>
+                                                                        <td mat-cell *matCellDef="let personnecaution"
+                                                                            class="text-center">
+                                                                            {{ personnecaution.nom }}
+                                                                        </td>
+                                                                    </ng-container>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="prenom">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center"> Prenom
+                                                                    </th>
+                                                                    <td mat-cell *matCellDef="let personnecaution"
+                                                                        class="text-center">
+                                                                        {{ personnecaution.prenom }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Status Column -->
+                                                                <ng-container matColumnDef="telephone">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Contact </th>
+                                                                    <td mat-cell *matCellDef="let personnecaution"
+                                                                        class="text-center">
+                                                                        {{ personnecaution.telephone }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Mode Column -->
+                                                                <ng-container matColumnDef="profession">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Profession </th>
+                                                                    <td mat-cell *matCellDef="let personnecaution"
+                                                                        class="text-center">
+                                                                        {{ personnecaution.profession }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <!-- Contact Column -->
+                                                                <ng-container matColumnDef="activite">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Activité </th>
+                                                                    <td mat-cell *matCellDef="let personnecaution"
+                                                                        class="text-center">
+                                                                        {{ personnecaution.activite }}
+                                                                    </td>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="age">
+                                                                    <th mat-header-cell *matHeaderCellDef
+                                                                        class="text-center">
+                                                                        Age </th>
+                                                                    <td mat-cell *matCellDef="let personnecaution"
+                                                                        class="text-center">
+                                                                        {{ personnecaution.age }}
+                                                                    </td>
+                                                                </ng-container>
+
+                                                                <!-- Header and Row Definitions -->
+                                                                <tr mat-header-row *matHeaderRowDef="displayedColumns"
+                                                                    class="table-primary"></tr>
+                                                                <tr mat-row
+                                                                    *matRowDef="let row; columns: displayedColumns;"
+                                                                    class="align-middle"></tr>
+                                                            </table>
+                                                        </div>
+                                                        <br>
+                                                        <h5 class="mt-0">Information sur l'iterinaire de la personne
+                                                            caution et celui de l'associé</h5>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Interinaire Associé</th>
+                                                                        <th>Interinaire Personne Caution</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>{{
+                                                                            state.appData?.data?.localisation?.it_ass
+                                                                            }}
+                                                                        </td>
+
+                                                                        <td> {{
+                                                                            state.appData?.data?.localisation?.it_pc
+                                                                            }}
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <br>
+                                                        <h5 class="mt-0">Tous les actes de propriété </h5>
+                                                        <div id="lightgallery-without-thumb" class="row lightGallery">
+                                                            <ng-container
+                                                                *ngIf="state.appData?.data?.actes; else noActes">
+                                                                <div *ngFor="let acte of state.appData?.data?.actes"
+                                                                    class="col-md-4"
+                                                                    style="margin-bottom: 15px; position: relative;">
+                                                                    <!-- Image Display -->
+                                                                    <ng-container *ngIf="isImage(acte.acteUrl!)">
+                                                                        <a [href]="acte.acteUrl" class="image-tile"
+                                                                            target="_blank">
+                                                                            <img [src]="acte.acteUrl" alt="Image Acte"
+                                                                                class="img-fluid" />
+                                                                        </a>
+                                                                        <!-- Delete Icon -->
+                                                                    </ng-container>
+                                                                    <!-- PDF Display -->
+                                                                    <ng-container *ngIf="isPDF(acte.acteUrl!)">
+                                                                        <a [href]="acte.acteUrl" target="_blank"
+                                                                            class="pdf-tile">
+                                                                            <div
+                                                                                style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #f8f9fa;">
+                                                                                <mat-icon
+                                                                                    style="font-size: 48px; color: #d32f2f;">picture_as_pdf</mat-icon>
+                                                                                <p>{{ 'Voir le Document' }}</p>
+                                                                            </div>
+                                                                        </a>
+                                                                        <!-- Delete Icon -->
+                                                                    </ng-container>
+                                                                </div>
+                                                            </ng-container>
+                                                            <ng-template #noActes>
+                                                                <p>Aucun acte disponible</p>
+                                                            </ng-template>
+                                                        </div>
+                                                        <br>
+                                                        <ng-container *ngIf="state.appData?.data?.user as user">
+                                                            <ng-container [ngSwitch]="user.roleName">
+                                                                <ng-container
+                                                                    *ngIf="state.appData?.data?.garantieMat?.referenceCredit">
+                                                                    <app-notegarantie *ngSwitchCase="'ROLE_DA'"
+                                                                        [user]="state.appData?.data?.user"
+                                                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-notegarantie>
+                                                                </ng-container>
+
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-app" role="tabpanel"
+                                                aria-labelledby="pills-app-tab">
+                                                <ng-container *ngIf="state.appData?.data?.user as user">
+                                                    <ng-container [ngSwitch]="user.roleName">
+                                                        <div *ngSwitchCase="'ROLE_DA'" class="media">
+                                                            <div class="media-body">
+                                                                <ng-container
+                                                                    *ngIf="state.appData?.data?.garantieMat?.referenceCredit && state.appData?.data?.resultNote!=='EMPTY'; else noData">
+                                                                    <app-appreciation [user]="state.appData?.data?.user"
+                                                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"
+                                                                        [montantDemande]="state.appData?.data?.confirmedCredit?.montant">
+                                                                    </app-appreciation>
+                                                                </ng-container>
+                                                                <ng-template #noData>
+                                                                    <div class="alert alert-warning" role="alert"> Vous
+                                                                        devez
+                                                                        noter avant de pouvoir continuer </div>
+                                                                </ng-template>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngSwitchCase="'ROLE_USER'" class="media">
+                                                            <div class="media-body">
+                                                                <ng-container
+                                                                    *ngIf="state.appData?.data?.appreciation?.referenceCredit">
+                                                                    <app-statecreditconfirmed
+                                                                        [referenceCredit]="state.appData?.data?.appreciation?.referenceCredit"></app-statecreditconfirmed>
+                                                                </ng-container>
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

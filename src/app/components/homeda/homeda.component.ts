@@ -12,7 +12,7 @@ import { RoleState } from '../../enum/rolestate.enum';
 import { CustomHttpResponse, HomeState } from '../../interfaces/appstates';
 import { State } from '../../interfaces/state';
 import { DemandeIndividuelService } from '../../services/individuel.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { Credit } from '../../interfaces/credit';
 import { Individuel } from '../../interfaces/individuel';
@@ -39,7 +39,8 @@ export class HomedaComponent implements OnInit {
 
   constructor(
     private demandeIndividuelService: DemandeIndividuelService,
-    private activatedRouter: ActivatedRoute
+    private activatedRouter: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -83,4 +84,10 @@ export class HomedaComponent implements OnInit {
   }
 
   public updateChargeInd(): void {}
+
+  public detailCredit(credit: Credit): void {
+    this.router.navigate([
+      `/detailcredit/${credit.referenceCredit}/${credit.codeMembre}`,
+    ]);
+  }
 }

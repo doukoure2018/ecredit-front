@@ -28,7 +28,6 @@ export class HomeagentComponent implements OnInit {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public isLoadingSubject = this.loadingSubject.asObservable();
   public readonly DataState = DataState;
-  public readonly RoleState = RoleState;
 
   constructor(private demandeIndividuelService: DemandeIndividuelService) {}
 
@@ -39,7 +38,7 @@ export class HomeagentComponent implements OnInit {
         this.dataSubject.next(response);
         return {
           dataState: DataState.LOADED,
-          appData: this.dataSubject.value ?? undefined,
+          appData: response,
         };
       }),
       startWith({ dataState: DataState.LOADING }),

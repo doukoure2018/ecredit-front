@@ -1,0 +1,12 @@
+<div class="alert alert-primary" role="alert">
+    <p>Assurer-vous de prendre en compte toutes les
+        suggestion du <strong>DIRECTEUR D'AGENCE
+        </strong>
+        avant de cliquer sur le button ci-dessous</p>
+
+    <button mat-raised-button color="warn" [disabled]="isLoading$ | async" (click)="confirmedCreditAgent()">
+        <span *ngIf="isLoading$ | async">Loading...</span>
+        <span *ngIf="!(isLoading$ | async)">
+            Ou je Confirme </span>
+    </button>
+</div>

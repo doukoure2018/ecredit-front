@@ -1,0 +1,25 @@
+<div *ngIf="resultNoteState$ | async as state" class="container-scroller">
+    <div class="card card-inverse-info">
+        <div class="card-body">
+            <p class="mb-4"> Vous avez effectue les notes avec success, vous pouvez maintenant cliquer sur le bouton
+                ci-dessous pour quitter!</p>
+            <form [formGroup]="resultNoteForm" class="text-center">
+                <div class="button-group">
+                    <div class="d-flex justify-content-center">
+                        <button mat-raised-button color="primary"
+                            [disabled]="state.dataState === DataState.LOADING || resultNoteForm.invalid" type="button"
+                            (click)="onSave()" class="btn btn-primary">
+                            <ng-container *ngIf="isLoading$ | async">
+                                <span class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                                    style="margin-right: 5px"></span>
+                                <span>Loading...</span>
+                            </ng-container>
+                            <ng-container *ngIf="!(isLoading$ | async)">
+                                Valider pour Quitter
+                            </ng-container>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

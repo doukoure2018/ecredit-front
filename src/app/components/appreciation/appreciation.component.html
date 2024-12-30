@@ -1,0 +1,65 @@
+<div *ngIf="AppreciationState$ | async as state" class="container-scroller">
+    <h5 class="mt-0">Appreciation Personnelle du Directeur d'agence</h5>
+    <form [formGroup]="appreciationForm">
+        <div class="row">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Montant Demandé</mat-label>
+                    <input matInput formControlName="montantDemande" type="number" placeholder="Montant Demande"
+                        [readonly]="true" />
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Montant Suggeré</mat-label>
+                    <input matInput formControlName="montantSuggere" type="number" placeholder="Montant Suggeré" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Motif de la Note</mat-label>
+                    <textarea matInput formControlName="motif"
+                        placeholder="Décrire brièvement le motif de votre Appreciation personnelle" rows="2"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="button-group">
+            <div *ngIf="isDisabled$ | async">
+                <button mat-raised-button color="primary" [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)
+                                                                        || appreciationForm.invalid" type="button"
+                    (click)="onSave()" class="btn btn-primary">
+                    <ng-container *ngIf="isLoading$ | async">
+                        <span class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                            style="margin-right: 5px"></span>
+                        <span>Loading...</span>
+                    </ng-container>
+                    <ng-container *ngIf="!(isLoading$ | async)">Enregister
+                    </ng-container>
+                </button>
+            </div>
+            <div *ngIf="!(isDisabled$ | async)">
+                <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING" type="button"
+                    (click)="updateData()" class="btn btn-primary" style="width: auto">
+                    <ng-container *ngIf="isLoading$ | async">
+                        <span class="mat-spinner mat-spinner-small" role="status" aria-hidden="true"
+                            style="margin-right: 5px"></span>
+                        <span>Loading...</span>
+                    </ng-container>
+                    <ng-container *ngIf="!(isLoading$ | async)">Modifier
+                    </ng-container>
+                </button>
+            </div>
+        </div>
+    </form>
+    <br>
+
+    <ng-container *ngIf="state.appData?.data?.appreciation?.referenceCredit">
+        <app-resultnote [user]="state.appData?.data?.user"
+            [referenceCredit]="state.appData?.data?.appreciation?.referenceCredit"></app-resultnote>
+    </ng-container>
+
+
+</div>

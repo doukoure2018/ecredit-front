@@ -1,0 +1,47 @@
+<div *ngIf="noteViewCreditState$ | async as state" class="container-scroller">
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Apreciation du directeur D'agence</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>PROFILE </th>
+                                <th> ANALYSE </th>
+                                <th> GARANTIE </th>
+                                <th> APPRECIATION DIRECTEUR D'AGENCE </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>NOTE: <strong>{{state.appData?.data?.noteProfile?.note }}</strong> </p>
+                                    <p>APRECIATION: <strong>{{state.appData?.data?.noteProfile?.motif }}</strong> </p>
+                                </td>
+                                <td>
+                                    <p>NOTE: <strong>{{state.appData?.data?.noteAnalyse?.note }}</strong> </p>
+                                    <p>APRECIATION: <strong>{{state.appData?.data?.noteAnalyse?.motif }}</strong></p>
+                                </td>
+                                <td>
+                                    <p>NOTE: <strong>{{state.appData?.data?.noteGarantie?.note }}</strong> </p>
+                                    <p>APRECIATION: <strong>{{state.appData?.data?.noteGarantie?.motif }}</strong> </p>
+                                </td>
+                                <td>
+                                    <p>APRECIATION: <strong>{{state.appData?.data?.appreciation?.motif }}</strong></p>
+                                    <p>MONTANT DEMANDE: <strong>{{state.appData?.data?.appreciation?.montantDemande |
+                                            number:'1.0-2'
+                                            }} GNF</strong></p>
+                                    <p>MONTANT SUGGERE: <strong>{{state.appData?.data?.appreciation?.montantSuggere |
+                                            number:'1.0-2'
+                                            }} GNF</strong></p>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

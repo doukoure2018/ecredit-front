@@ -77,7 +77,6 @@ const routes: Routes = [
     component: DetailcreditComponent,
     canActivate: [AuthenticationGuard],
   },
-
   {
     path: 'profile',
     component: ProfileComponent,

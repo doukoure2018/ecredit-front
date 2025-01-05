@@ -176,11 +176,62 @@ export class PetitcreditComponent implements OnInit {
     );
   }
 
-  public onSaveAndContinue(): void {}
-
   public updateData(): void {
-    console.log('this is updata information');
+    this.loadingSubject.next(true);
+    this.petitCreditState$ = this.activatedRouter.paramMap.pipe(
+      switchMap((param: ParamMap) => {
+        return this.individuelService
+          .udpateProfile$(
+            param.get(this.REFERENCE_CREDIT)!,
+            this.petitCreditForm.value
+          )
+          .pipe(
+            map((response) => {
+              console.log(response);
+              this.dataSubject.next(response);
+              this.loadingSubject.next(false);
+
+              if (response.data?.petitcredit != null) {
+                this.petitCreditForm.patchValue({
+                  moyenPerson: response.data.petitcredit.moyenPerson,
+                  referenceCredit: response.data.petitcredit.referenceCredit,
+                  bien: response.data.petitcredit.bien,
+                  capital: response.data.petitcredit.capital,
+                  creance: response.data.petitcredit.creance,
+                  dette: response.data.petitcredit.dette,
+                  statutActivite: response.data.petitcredit.statutActivite,
+                  experience: response.data.petitcredit.experience,
+                  lieuxAct: response.data.petitcredit.lieuxAct,
+                  personEmp: response.data.petitcredit.personEmp,
+                  lien: response.data.petitcredit.lien,
+                  nombre: response.data.petitcredit.nombre,
+                  cumulCredit: response.data.petitcredit.cumulCredit,
+                  nbreCredit: response.data.petitcredit.nbreCredit,
+                });
+              }
+              return {
+                dataState: DataState.LOADED,
+                appData: response,
+              };
+            }),
+            startWith({
+              dataState: DataState.LOADING,
+              appData: this.dataSubject.value ?? undefined,
+            }),
+            catchError((error: string) => {
+              this.loadingSubject.next(false);
+              return of({
+                dataState: DataState.ERROR,
+                error,
+                appData: this.dataSubject.value ?? undefined,
+              });
+            })
+          );
+      })
+    );
   }
+
+  public onSaveAndContinue(): void {}
 
   public goNext(): void {
     this.router.navigate([`/charge/${this.referenceId}`]);

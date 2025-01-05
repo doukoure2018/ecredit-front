@@ -174,6 +174,21 @@ export class DemandeIndividuelService {
         }
       )
       .pipe(tap(console.log), catchError(this.handleError));
+  /**
+   * Update profile Analyse Petit Credit
+   * @param creditForm
+   * @returns
+   */
+  udpateProfile$ = (referenceCredit: string, petitCreditForm: PetitCredit) =>
+    <Observable<CustomHttpResponse<PetitCreditState>>>this.http
+      .put<CustomHttpResponse<PetitCreditState>>(
+        `${this.server}/${referenceCredit}/updatePetitCredit`,
+        petitCreditForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
 
   /**
    * Analyse petit credit
@@ -209,6 +224,43 @@ export class DemandeIndividuelService {
       .pipe(tap(console.log), catchError(this.handleError));
 
   /**
+   * Update Analyse Petit Credit
+   * @param chargeIndForm
+   * @returns
+   */
+  updateChargesInd$ = (
+    id: number,
+    referenceCredit: string,
+    chargeIndForm: ChargesInd
+  ) => <Observable<CustomHttpResponse<ChargeIndState>>>this.http
+      .put<CustomHttpResponse<ChargeIndState>>(
+        `${this.server}/${id}/${referenceCredit}/updateChargeInd`,
+        chargeIndForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   *  delete ChargesInd by Id
+   * @param id
+   * @returns
+   */
+  deleteChargesInd$ = (
+    id: number,
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<ChargeIndState>> =>
+    this.http
+      .delete<CustomHttpResponse<ChargeIndState>>(
+        `${this.server}/${id}/${referenceCredit}/deleteChargeInd`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
    * Analyse petit credit
    * @param referenceCredit
    * @returns
@@ -240,6 +292,84 @@ export class DemandeIndividuelService {
         }
       )
       .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   * Mise a jour Vente
+   * @param id
+   * @param referenceCredit
+   * @param venteIndForm
+   * @returns
+   */
+  updateProduitInd$ = (
+    id: number,
+    referenceCredit: string,
+    venteIndForm: ProduitInd
+  ) => <Observable<CustomHttpResponse<ProduitIndState>>>this.http
+      .put<CustomHttpResponse<ProduitIndState>>(
+        `${this.server}/${id}/${referenceCredit}/updateProduitInd`,
+        venteIndForm,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   *  delete Produit by Id
+   * @param id
+   * @returns
+   */
+  deleteProduitInd$ = (
+    id: number,
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<ProduitIndState>> =>
+    this.http
+      .delete<CustomHttpResponse<ProduitIndState>>(
+        `${this.server}/${id}/${referenceCredit}/deleteProduit`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
+
+  /**
+   * Mise a jour Personne Caution
+   * @param id
+   * @param referenceCredit
+   * @param personneCaution
+   * @returns
+   */
+  udpatePersonneCaution$ = (
+    id: number,
+    referenceCredit: string,
+    personneCaution: Personnecaution
+  ) => <Observable<CustomHttpResponse<PersonneCautionState>>>this.http
+      .put<CustomHttpResponse<PersonneCautionState>>(
+        `${this.server}/${id}/${referenceCredit}/updateGarantiePersonneCaution`,
+        personneCaution,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+      .pipe(tap(console.log), catchError(this.handleError));
+
+  /**
+   *  delete PersonneCaution
+   * @param id
+   * @returns
+   */
+  deletePersonneCaution$ = (
+    id: number,
+    referenceCredit: string
+  ): Observable<CustomHttpResponse<PersonneCautionState>> =>
+    this.http
+      .delete<CustomHttpResponse<PersonneCautionState>>(
+        `${this.server}/${id}/${referenceCredit}/deleteGarantiePersonneCaution`
+      )
+      .pipe(
+        tap((response) => console.log('API Response:', response)),
+        catchError(this.handleError)
+      );
 
   /**
    * frequence de l'activité

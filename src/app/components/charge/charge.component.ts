@@ -16,6 +16,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChargesInd } from '../../interfaces/charge-ind';
 import { MatTableDataSource } from '@angular/material/table';
+import { response } from 'express';
 
 @Component({
   selector: 'app-charge',
@@ -37,6 +38,9 @@ export class ChargeComponent implements OnInit {
   private disableSubject = new BehaviorSubject<boolean>(false); // is null
   public isDisabled$ = this.disableSubject.asObservable();
 
+  // this is used to allow the modification button
+  private disableUpdateData = new BehaviorSubject<boolean>(false);
+  public isDisableData$ = this.disableUpdateData.asObservable();
   // referenceId
   private referenceId!: string;
 
@@ -62,6 +66,7 @@ export class ChargeComponent implements OnInit {
     this.referenceId =
       this.activatedRouter.snapshot.paramMap.get('referencedcredit') || '';
     this.chargeIndForm = this.fb.group({
+      id: [''],
       libele: ['', Validators.required],
       referenceCredit: [''],
       prixUnit: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -98,8 +103,12 @@ export class ChargeComponent implements OnInit {
   public onSave(): void {
     this.chargeState$ = this.activatedRouter.paramMap.pipe(
       switchMap((params: ParamMap) => {
+        const referenceCredit = params.get(this.REFERENCE_CREDIT);
+        if (!referenceCredit) {
+          throw new Error('Reference credit is required');
+        }
         return this.indService
-          .addChargesInd$(this.referenceId, this.chargeIndForm.value)
+          .addChargesInd$(referenceCredit, this.chargeIndForm.value)
           .pipe(
             map((response) => {
               console.log(response);
@@ -108,15 +117,17 @@ export class ChargeComponent implements OnInit {
               this.chargeIndForm.reset();
               return {
                 dataState: DataState.LOADED,
-                appData: this.dataSubject.value ?? undefined,
+                appData: response,
               };
             }),
-            startWith({ dataState: DataState.LOADING }),
+            startWith({
+              dataState: DataState.LOADING,
+              appData: this.dataSubject.value ?? undefined,
+            }),
             catchError((error: string) => {
               return of({
                 dataState: DataState.ERROR,
                 error,
-                appData: this.dataSubject.value ?? undefined,
               });
             })
           );
@@ -126,13 +137,93 @@ export class ChargeComponent implements OnInit {
 
   public onSaveAndContinue(): void {}
 
-  public updateChargeInd(): void {}
-
   public goNext(): void {
     this.router.navigate([`/vente/${this.referenceId}`]);
   }
 
   public goBack(): void {
     this.router.navigate([`/petitcredit/${this.referenceId}`]);
+  }
+
+  public deleteChargeInd(id: number): void {
+    this.chargeState$ = this.indService
+      .deleteChargesInd$(id, this.referenceId)
+      .pipe(
+        map((response) => {
+          console.log(response);
+          this.dataSubject.next(response);
+          this.dataSource.data = response.data?.chargeind ?? [];
+
+          // Re-initialize or reset the form
+          this.chargeIndForm.reset();
+          // Patch back the reference credit or any default values you need
+          this.chargeIndForm.patchValue({ referenceCredit: this.referenceId });
+
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
+  }
+
+  public viewChargeInd(chargesInd: ChargesInd): void {
+    this.disableUpdateData.next(true);
+    if (chargesInd != null) {
+      this.chargeIndForm.patchValue({
+        id: chargesInd.id,
+        libele: chargesInd.libele,
+        referenceCredit: chargesInd.referenceCredit,
+        prixUnit: chargesInd.prixUnit,
+        qte: chargesInd.qte,
+      });
+    }
+  }
+
+  /**
+   * Modification de la charge
+   */
+  public updateChargesInd(): void {
+    const chargesInd = this.chargeIndForm.value;
+    const chargesInd_id = chargesInd.id;
+    const chargesInd_referenceCredit = chargesInd.referenceCredit;
+    this.chargeState$ = this.indService
+      .updateChargesInd$(chargesInd_id, chargesInd_referenceCredit, chargesInd)
+      .pipe(
+        map((response) => {
+          console.log(response);
+          this.dataSource.data = response.data?.chargeind ?? [];
+          this.chargeIndForm.reset();
+          this.disableUpdateData.next(false);
+          this.loadingSubject.next(false);
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          this.disableSubject.next(false);
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
   }
 }

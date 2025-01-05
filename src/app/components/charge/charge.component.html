@@ -1,58 +1,63 @@
-<ng-container *ngIf="chargeState$ | async as state">
-    <div class="container-scroller">
-        <app-menu></app-menu>
-        <div class="container-fluid page-body-wrapper">
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="page-header">
-                        <h3 class="page-title"> Charges </h3>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Charges</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form [formGroup]="chargeIndForm">
-                                        <!-- Reference Credit -->
-                                        <div class="form-group row">
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Libelé</mat-label>
-                                                    <input matInput formControlName="libele"
-                                                        placeholder="Définir le libelé" />
-                                                    <mat-error *ngIf="chargeIndForm.get('libele')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Quantité</mat-label>
-                                                    <input matInput formControlName="qte"
-                                                        placeholder="Définir la Quantité" />
-                                                    <mat-error *ngIf="chargeIndForm.get('qte')?.invalid">Champ
-                                                        requis
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Prix Unitaire</mat-label>
-                                                    <input matInput formControlName="prixUnit"
-                                                        placeholder="Définir le prix unitaire" />
-                                                    <mat-error *ngIf="chargeIndForm.get('prixUnit')?.invalid">Champ
-                                                        requis
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
+<ng-container *ngIf="chargeState$ | async as state" class="container-scroller">
+    <ng-container *ngIf="state.appData?.data?.user as user">
+        <ng-container [ngSwitch]="user.roleName">
+            <app-menu *ngSwitchCase="'ROLE_USER'" [user]="user"></app-menu>
+            <app-menuda *ngSwitchCase="'ROLE_DA'" [user]="user"></app-menuda>
+        </ng-container>
+    </ng-container>
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title"> Charges </h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Charges</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <form [formGroup]="chargeIndForm">
+                                    <!-- Reference Credit -->
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Libelé</mat-label>
+                                                <input matInput formControlName="libele"
+                                                    placeholder="Définir le libelé" />
+                                                <mat-error *ngIf="chargeIndForm.get('libele')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
                                         </div>
 
-                                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Quantité</mat-label>
+                                                <input matInput formControlName="qte"
+                                                    placeholder="Définir la Quantité" />
+                                                <mat-error *ngIf="chargeIndForm.get('qte')?.invalid">Champ
+                                                    requis
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Prix Unitaire</mat-label>
+                                                <input matInput formControlName="prixUnit"
+                                                    placeholder="Définir le prix unitaire" />
+                                                <mat-error *ngIf="chargeIndForm.get('prixUnit')?.invalid">Champ
+                                                    requis
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                                        <ng-container *ngIf="(isDisableData$ | async) === false; else updateData">
                                             <button mat-raised-button color="warn"
                                                 [disabled]="state.dataState === DataState.LOADING  || chargeIndForm.invalid"
                                                 type="button" (click)="onSave()" class="btn btn-primary small-button"
@@ -61,10 +66,27 @@
                                                     role="status" aria-hidden="true" style="margin-right: 5px"></span>
                                                 {{ (isLoading$ | async) ? 'Loading...' : 'Enregister' }}
                                             </button>
-
-
-
-                                            <!-- Inline Buttons: Retour and Suivant -->
+                                        </ng-container>
+                                        <ng-template #updateData>
+                                            <button mat-raised-button color="accent"
+                                                [disabled]="state.dataState === DataState.LOADING  || chargeIndForm.invalid"
+                                                type="button" (click)="updateChargesInd()"
+                                                class="btn btn-accent small-button"
+                                                style="min-width: auto; padding: 5px 15px; font-size: 14px;">
+                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                                {{ (isLoading$ | async) ? 'Loading...' : 'Mise a jour ' }}
+                                            </button>
+                                        </ng-template>
+                                        <ng-container
+                                            *ngIf="state.appData?.data?.credit && state.appData?.data?.credit?.status=='REJECTED'"
+                                            ; else noActes>
+                                            <a [routerLink]="['/detailcredit/'+state.appData?.data?.credit?.referenceCredit+'/'+state.appData?.data?.credit?.codeMembre]"
+                                                mat-raised-button color="primary" type="button" class="btn btn-primary">
+                                                <span>Retour</span>
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #noActes>
                                             <div style="display: flex; gap: 15px;">
                                                 <!-- Button: Retour -->
                                                 <button mat-raised-button color="primary"
@@ -72,7 +94,6 @@
                                                     (click)="goBack()" class="btn btn-primary">
                                                     <span>Retour</span>
                                                 </button>
-
                                                 <!-- Button: Suivant -->
                                                 <button mat-raised-button color="primary"
                                                     [disabled]="state.dataState === DataState.LOADING" type="button"
@@ -80,81 +101,78 @@
                                                     <span>Suivant</span>
                                                 </button>
                                             </div>
-                                        </div>
-
-                                    </form>
-
-                                    <br><br>
-                                    <div class="col-xm-12">
-                                        <table mat-table [dataSource]="dataSource"
-                                            class="table table-hover table-bordered table-striped">
-                                            <ng-container matColumnDef="index">
-                                                <th mat-header-cell *matHeaderCellDef class="text-center"> # </th>
-                                                <td mat-cell *matCellDef="let chargeInd; let i = index"
-                                                    class="text-center">
-                                                    {{ i + 1 }}
-                                                </td>
-                                                <!-- Sent Date Column -->
-                                                <ng-container matColumnDef="libele">
-                                                    <th mat-header-cell *matHeaderCellDef class="text-center">
-                                                        Libelé </th>
-                                                    <td mat-cell *matCellDef="let chargeInd" class="text-center">
-                                                        {{ chargeInd.libele }}
-                                                    </td>
-                                                </ng-container>
-                                            </ng-container>
-                                            <!-- Message Column -->
-                                            <ng-container matColumnDef="qte">
-                                                <th mat-header-cell *matHeaderCellDef class="text-center"> Quantité
-                                                </th>
-                                                <td mat-cell *matCellDef="let chargeInd" class="text-center">
-                                                    {{ chargeInd.qte }}
-                                                </td>
-                                            </ng-container>
-                                            <!-- Status Column -->
-                                            <ng-container matColumnDef="prixUnit">
-                                                <th mat-header-cell *matHeaderCellDef class="text-center"> Prix
-                                                    Unitaire </th>
-                                                <td mat-cell *matCellDef="let chargeInd" class="text-center">
-                                                    {{ chargeInd.prixUnit | number:'1.0-3' }}
-                                                </td>
-                                            </ng-container>
-                                            <!-- Mode Column -->
-                                            <ng-container matColumnDef="prixTotal">
-                                                <th mat-header-cell *matHeaderCellDef class="text-center">
-                                                    Montant Total </th>
-                                                <td mat-cell *matCellDef="let chargeInd" class="text-center">
-                                                    {{ chargeInd.prixUnit * chargeInd.qte | number:'1.0-3' }}
-                                                </td>
-                                            </ng-container>
-                                            <!-- Contact Column -->
-
-                                            <ng-container matColumnDef="action">
-                                                <th mat-header-cell *matHeaderCellDef class="text-center"> Action
-                                                </th>
-                                                <td mat-cell *matCellDef="let infoCampaign" class="text-center">
-                                                    <button type="button" (click)="
-                                                updateChargeInd(
-                                                )
-                                            " class="btn btn-sm btn-info">
-                                                        <i class="fas fa-eye"></i>Update
-                                                    </button>
-                                                </td>
-                                            </ng-container>
-                                            <!-- Header and Row Definitions -->
-                                            <tr mat-header-row *matHeaderRowDef="displayedColumns"
-                                                class="table-primary"></tr>
-                                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                                                class="align-middle"></tr>
-                                        </table>
+                                        </ng-template>
                                     </div>
+                                </form>
+                                <br><br>
+                                <div class="col-xm-12">
+                                    <table mat-table [dataSource]="dataSource"
+                                        class="table table-hover table-bordered table-striped">
+                                        <ng-container matColumnDef="index">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center"> # </th>
+                                            <td mat-cell *matCellDef="let chargeInd; let i = index" class="text-center">
+                                                {{ i + 1 }}
+                                            </td>
+                                            <!-- Sent Date Column -->
+                                            <ng-container matColumnDef="libele">
+                                                <th mat-header-cell *matHeaderCellDef class="text-center">
+                                                    Libelé </th>
+                                                <td mat-cell *matCellDef="let chargeInd" class="text-center">
+                                                    {{ chargeInd.libele }}
+                                                </td>
+                                            </ng-container>
+                                        </ng-container>
+                                        <!-- Message Column -->
+                                        <ng-container matColumnDef="qte">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center"> Quantité
+                                            </th>
+                                            <td mat-cell *matCellDef="let chargeInd" class="text-center">
+                                                {{ chargeInd.qte }}
+                                            </td>
+                                        </ng-container>
+                                        <!-- Status Column -->
+                                        <ng-container matColumnDef="prixUnit">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center"> Prix
+                                                Unitaire </th>
+                                            <td mat-cell *matCellDef="let chargeInd" class="text-center">
+                                                {{ chargeInd.prixUnit | number:'1.0-3' }}
+                                            </td>
+                                        </ng-container>
+                                        <!-- Mode Column -->
+                                        <ng-container matColumnDef="prixTotal">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center">
+                                                Montant Total </th>
+                                            <td mat-cell *matCellDef="let chargeInd" class="text-center">
+                                                {{ chargeInd.prixUnit * chargeInd.qte | number:'1.0-3' }}
+                                            </td>
+                                        </ng-container>
+                                        <!-- Contact Column -->
+                                        <ng-container matColumnDef="action">
+                                            <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+                                            <td mat-cell *matCellDef="let chargeInd" class="text-center">
+                                                <button mat-icon-button class="me-2" color="primary" matTooltip="Update"
+                                                    (click)="viewChargeInd(chargeInd)">
+                                                    <mat-icon>edit</mat-icon>
+                                                </button>
+                                                <button mat-icon-button color="warn" matTooltip="Delete"
+                                                    (click)="deleteChargeInd(chargeInd.id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </td>
+                                        </ng-container>
+                                        <!-- Header and Row Definitions -->
+                                        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-primary">
+                                        </tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                                            class="align-middle"></tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <app-footer></app-footer>
         </div>
+        <app-footer></app-footer>
     </div>
 </ng-container>

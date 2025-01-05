@@ -1,92 +1,94 @@
-<ng-container *ngIf="garantieMatState$ | async as state">
-    <div class="container-scroller">
-        <app-menu></app-menu>
-        <div class="container-fluid page-body-wrapper">
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="page-header">
-                        <h3 class="page-title">Garantie Materielle</h3>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Garantie Credit </li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form [formGroup]="garantieMatForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Libellé Garantie Matérielle</mat-label>
-                                                    <textarea matInput formControlName="libele"
-                                                        placeholder="Décrire brièvement la garantie Matérielle"
-                                                        rows="3"></textarea>
-                                                </mat-form-field>
-                                            </div>
-                                            <!-- Valeur -->
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Valeur</mat-label>
-                                                    <input matInput type="number" formControlName="montant"
-                                                        placeholder="Quelle est la valeur ?" />
-                                                </mat-form-field>
-                                            </div>
+<div *ngIf="garantieMatState$ | async as state" class="container-scroller">
+    <ng-container *ngIf="state.appData?.data?.user as user">
+        <ng-container [ngSwitch]="user.roleName">
+            <app-menu *ngSwitchCase="'ROLE_USER'" [user]="user"></app-menu>
+            <app-menuda *ngSwitchCase="'ROLE_DA'" [user]="user"></app-menuda>
+        </ng-container>
+    </ng-container>
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title">Garantie Materielle</h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Garantie Credit </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <form [formGroup]="garantieMatForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Libellé Garantie Matérielle</mat-label>
+                                                <textarea matInput formControlName="libele"
+                                                    placeholder="Décrire brièvement la garantie Matérielle"
+                                                    rows="3"></textarea>
+                                            </mat-form-field>
                                         </div>
-                                        <!-- Buttons -->
-                                        <div class="button-group">
-                                            <div *ngIf="isDisabled$ | async">
-                                                <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)
+                                        <!-- Valeur -->
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Valeur</mat-label>
+                                                <input matInput type="number" formControlName="montant"
+                                                    placeholder="Quelle est la valeur ?" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <!-- Buttons -->
+                                    <div class="button-group">
+                                        <div *ngIf="isDisabled$ | async">
+                                            <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING || !(isDisabled$ | async)
                                                     || garantieMatForm.invalid" type="button" (click)="onSave()"
-                                                    class="btn btn-primary">
-                                                    <ng-container *ngIf="isLoading$ | async">
-                                                        <span class="mat-spinner mat-spinner-small" role="status"
-                                                            aria-hidden="true" style="margin-right: 5px"></span>
-                                                        <span>Loading...</span>
-                                                    </ng-container>
-                                                    <ng-container
-                                                        *ngIf="!(isLoading$ | async)">Enregister</ng-container>
-                                                </button>
-                                            </div>
-                                            <div *ngIf="!(isDisabled$ | async)">
-                                                <button mat-raised-button color="warn"
-                                                    [disabled]="state.dataState === DataState.LOADING" type="button"
-                                                    (click)="updateData()" class="btn btn-primary" style="width: auto">
-                                                    <ng-container *ngIf="isLoading$ | async">
-                                                        <span class="mat-spinner mat-spinner-small" role="status"
-                                                            aria-hidden="true" style="margin-right: 5px"></span>
-                                                        <span>Loading...</span>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="!(isLoading$ | async)">Mise à
-                                                        jour</ng-container>
-                                                </button>
-                                            </div>
+                                                class="btn btn-primary">
+                                                <ng-container *ngIf="isLoading$ | async">
+                                                    <span class="mat-spinner mat-spinner-small" role="status"
+                                                        aria-hidden="true" style="margin-right: 5px"></span>
+                                                    <span>Loading...</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="!(isLoading$ | async)">Enregister</ng-container>
+                                            </button>
                                         </div>
-                                    </form>
+                                        <div *ngIf="!(isDisabled$ | async)">
+                                            <button mat-raised-button color="warn"
+                                                [disabled]="state.dataState === DataState.LOADING" type="button"
+                                                (click)="updateData()" class="btn btn-primary" style="width: auto">
+                                                <ng-container *ngIf="isLoading$ | async">
+                                                    <span class="mat-spinner mat-spinner-small" role="status"
+                                                        aria-hidden="true" style="margin-right: 5px"></span>
+                                                    <span>Loading...</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="!(isLoading$ | async)">Mise à
+                                                    jour</ng-container>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                                <!-- Child Components -->
+                                <ng-container *ngIf="state.appData?.data?.garantieMat?.referenceCredit">
+                                    <app-personnecaution
+                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-personnecaution>
                                     <br>
-                                    <!-- Child Components -->
-                                    <ng-container *ngIf="state.appData?.data?.garantieMat?.referenceCredit">
-                                        <app-personnecaution
-                                            [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-personnecaution>
-                                        <br>
-                                        <app-localisation
-                                            [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-localisation>
-                                        <br>
-                                        <app-acte
-                                            [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-acte>
-                                        <br>
-                                        <app-statecredit [garantieMatState]="state.appData?.data"></app-statecredit>
-                                    </ng-container>
-                                </div>
+                                    <app-localisation
+                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-localisation>
+                                    <br>
+                                    <app-acte
+                                        [referenceCredit]="state.appData?.data?.garantieMat?.referenceCredit"></app-acte>
+                                    <br>
+                                    <app-statecredit [garantieMatState]="state.appData?.data"></app-statecredit>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
-                <app-footer></app-footer>
             </div>
+            <app-footer></app-footer>
         </div>
     </div>
-</ng-container>
+</div>

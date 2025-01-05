@@ -106,16 +106,19 @@ export interface ConfirmedCreditIndState {
 export interface PetitCreditState {
   user?: User;
   petitcredit?: PetitCredit;
+  credit?: Credit;
 }
 
 export interface ChargeIndState {
   user?: User;
   chargeind?: ChargesInd[];
+  credit?: Credit;
 }
 
 export interface ProduitIndState {
   user?: User;
   produitInd?: ProduitInd[];
+  credit?: Credit;
 }
 
 export interface FrequenceState {
@@ -127,6 +130,7 @@ export interface GarantieState {
   user?: User;
   garantieMat?: GarantieMatInd;
   statecredit?: boolean;
+  credit?: Credit;
 }
 
 export interface ActeState {

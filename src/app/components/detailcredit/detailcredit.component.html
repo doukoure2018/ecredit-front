@@ -82,6 +82,10 @@
                                                 <div class="media">
                                                     <div class="media-body">
                                                         <h5 class="mt-0">Information Signaletique du Client</h5>
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="updateProfile()"> Mise à Jour profile du Client
+                                                        </button>
+
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered">
                                                                 <thead>
@@ -149,6 +153,8 @@
                                                 <div class="media">
                                                     <div class="media-body">
                                                         <h5 class="mt-0">Les Charges </h5>
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="updateAnalyseCredit()"> Mise à Jour </button>
                                                         <div class="col-xm-12">
                                                             <table mat-table [dataSource]="dataSourceCharge"
                                                                 class="table table-hover table-bordered table-striped">
@@ -215,6 +221,9 @@
                                                         </div>
                                                         <br><br>
                                                         <h5 class="mt-0">Les Produits </h5>
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="updateAnalyseCreditProduit()"> Mise à Jour
+                                                        </button>
                                                         <div class="col-xm-12">
                                                             <table mat-table [dataSource]="dataSourceProduit"
                                                                 class="table table-hover table-bordered table-striped">
@@ -308,6 +317,9 @@
                                                 <div class="media">
                                                     <div class="media-body">
                                                         <h5 class="mt-0">Information sur la Garantie Materielle</h5>
+                                                        <button mat-raised-button color="primary"
+                                                            (click)="updateGarantie()"> Mise à Jour
+                                                        </button>
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered">
                                                                 <thead>

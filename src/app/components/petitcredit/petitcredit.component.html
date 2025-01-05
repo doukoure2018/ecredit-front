@@ -1,193 +1,203 @@
-<ng-container *ngIf="petitCreditState$ | async as state">
-    <div class="container-scroller">
-        <app-menu></app-menu>
-        <div class="container-fluid page-body-wrapper">
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="page-header">
-                        <h3 class="page-title"> Analyse Petit Credit </h3>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Petit Credit</li>
-                            </ol>
-                        </nav>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <form [formGroup]="petitCreditForm">
-                                        <!-- Reference Credit -->
-                                        <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Nombre de Credit</mat-label>
-                                                    <input matInput formControlName="nbreCredit"
-                                                        placeholder="Nombre de Credit" />
-                                                    <mat-error *ngIf="petitCreditForm.get('nbreCredit')?.invalid">Nombre
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Cumul de Credit</mat-label>
-                                                    <input matInput formControlName="cumulCredit"
-                                                        placeholder="Définir de Credit" />
-                                                    <mat-error *ngIf="petitCreditForm.get('cumulCredit')?.invalid">Champ
-                                                        requis
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Moyen déplacement</mat-label>
-                                                    <input matInput formControlName="moyenPerson"
-                                                        placeholder="Saisir le moyen de déplacement" />
-                                                    <mat-error *ngIf="petitCreditForm.get('moyenPerson')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Definir le bien</mat-label>
-                                                    <input matInput formControlName="bien"
-                                                        placeholder="Définir Brievement le bien" />
-                                                    <mat-error *ngIf="petitCreditForm.get('bien')?.invalid">Champ
-                                                        requis
-                                                    </mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Capital (en GNF)</mat-label>
-                                                    <input matInput formControlName="capital" type="number"
-                                                        placeholder="Définir le capital" />
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Combien vous devez (en GNF)</mat-label>
-                                                    <input matInput formControlName="creance" type="number"
-                                                        placeholder="Saisir la créance" />
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Combien on vous doit (en GNF)</mat-label>
-                                                    <input matInput formControlName="dette" type="number"
-                                                        placeholder="Saisir la dette" />
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <p class="card-description">Information sur L'activité</p>
-                                        <div class="form-group row">
-                                            <div class="col-lg-4">
-                                                <mat-radio-group formControlName="statutActivite">
-                                                    <mat-radio-button value="nouvelleActivite">Créer une
-                                                        nouvelle activité</mat-radio-button>
-                                                    <mat-radio-button value="renforcerActivite">Renforcer une
-                                                        activité existante</mat-radio-button>
-                                                </mat-radio-group>
-                                                <mat-error *ngIf="petitCreditForm.get('statutActivite')?.invalid">Champ
+<ng-container *ngIf="petitCreditState$ | async as state" class="container-scroller">
+    <ng-container *ngIf="state.appData?.data?.user as user">
+        <ng-container [ngSwitch]="user.roleName">
+            <app-menu *ngSwitchCase="'ROLE_USER'" [user]="user"></app-menu>
+            <app-menuda *ngSwitchCase="'ROLE_DA'" [user]="user"></app-menuda>
+        </ng-container>
+    </ng-container>
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="page-header">
+                    <h3 class="page-title"> Analyse Petit Credit </h3>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Petit Credit</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="row">
+                    <div class="col-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <form [formGroup]="petitCreditForm">
+                                    <!-- Reference Credit -->
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Nombre de Credit</mat-label>
+                                                <input matInput formControlName="nbreCredit"
+                                                    placeholder="Nombre de Credit" />
+                                                <mat-error *ngIf="petitCreditForm.get('nbreCredit')?.invalid">Nombre
                                                     requis</mat-error>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Lieu où l'activité est menée</mat-label>
-                                                    <input matInput formControlName="lieuxAct"
-                                                        placeholder="Saisir le lieu" />
-                                                    <mat-error *ngIf="petitCreditForm.get('lieuxAct')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Nombre d'année d'experiance</mat-label>
-                                                    <input matInput formControlName="experience"
-                                                        placeholder="Nombre d'année" />
-                                                    <mat-error *ngIf="petitCreditForm.get('experience')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Personnel employé</mat-label>
-                                                    <mat-select formControlName="personEmp">
-                                                        <mat-option value="membreFamille">Membres de la
-                                                            famille</mat-option>
-                                                        <mat-option value="autres">Autres</mat-option>
-                                                    </mat-select>
-                                                    <mat-error *ngIf="petitCreditForm.get('personEmp')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Nombre</mat-label>
-                                                    <input matInput formControlName="nombre" type="number"
-                                                        placeholder="Saisir le nombre" />
-                                                </mat-form-field>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Lien</mat-label>
-                                                    <input matInput formControlName="lien"
-                                                        placeholder="Saisir le lien" />
-                                                    <mat-error *ngIf="petitCreditForm.get('lien')?.invalid">Champ
-                                                        requis</mat-error>
-                                                </mat-form-field>
-                                            </div>
+                                            </mat-form-field>
                                         </div>
 
-                                        <div *ngIf="(isDisabled$ | async)" style="display: flex; gap: 15px;">
-                                            <!-- Button 1: Enregister -->
-                                            <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING 
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Cumul de Credit</mat-label>
+                                                <input matInput formControlName="cumulCredit"
+                                                    placeholder="Définir de Credit" />
+                                                <mat-error *ngIf="petitCreditForm.get('cumulCredit')?.invalid">Champ
+                                                    requis
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Moyen déplacement</mat-label>
+                                                <input matInput formControlName="moyenPerson"
+                                                    placeholder="Saisir le moyen de déplacement" />
+                                                <mat-error *ngIf="petitCreditForm.get('moyenPerson')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Definir le bien</mat-label>
+                                                <input matInput formControlName="bien"
+                                                    placeholder="Définir Brievement le bien" />
+                                                <mat-error *ngIf="petitCreditForm.get('bien')?.invalid">Champ
+                                                    requis
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Capital (en GNF)</mat-label>
+                                                <input matInput formControlName="capital" type="number"
+                                                    placeholder="Définir le capital" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Combien vous devez (en GNF)</mat-label>
+                                                <input matInput formControlName="creance" type="number"
+                                                    placeholder="Saisir la créance" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Combien on vous doit (en GNF)</mat-label>
+                                                <input matInput formControlName="dette" type="number"
+                                                    placeholder="Saisir la dette" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <p class="card-description">Information sur L'activité</p>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4">
+                                            <mat-radio-group formControlName="statutActivite">
+                                                <mat-radio-button value="nouvelleActivite">Créer une
+                                                    nouvelle activité</mat-radio-button>
+                                                <mat-radio-button value="renforcerActivite">Renforcer une
+                                                    activité existante</mat-radio-button>
+                                            </mat-radio-group>
+                                            <mat-error *ngIf="petitCreditForm.get('statutActivite')?.invalid">Champ
+                                                requis</mat-error>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Lieu où l'activité est menée</mat-label>
+                                                <input matInput formControlName="lieuxAct"
+                                                    placeholder="Saisir le lieu" />
+                                                <mat-error *ngIf="petitCreditForm.get('lieuxAct')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Nombre d'année d'experiance</mat-label>
+                                                <input matInput formControlName="experience"
+                                                    placeholder="Nombre d'année" />
+                                                <mat-error *ngIf="petitCreditForm.get('experience')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Personnel employé</mat-label>
+                                                <mat-select formControlName="personEmp">
+                                                    <mat-option value="membreFamille">Membres de la
+                                                        famille</mat-option>
+                                                    <mat-option value="autres">Autres</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="petitCreditForm.get('personEmp')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Nombre</mat-label>
+                                                <input matInput formControlName="nombre" type="number"
+                                                    placeholder="Saisir le nombre" />
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>Lien</mat-label>
+                                                <input matInput formControlName="lien" placeholder="Saisir le lien" />
+                                                <mat-error *ngIf="petitCreditForm.get('lien')?.invalid">Champ
+                                                    requis</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="(isDisabled$ | async)" style="display: flex; gap: 15px;">
+                                        <!-- Button 1: Enregister -->
+                                        <button mat-raised-button color="warn" [disabled]="state.dataState === DataState.LOADING 
                                                    || !(isDisabled$ | async)
                                                    || petitCreditForm.invalid" type="button" (click)="onSave()"
-                                                class="btn btn-primary">
-                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
-                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
-                                                <span *ngIf="isLoading$ | async">Loading...</span>
-                                                <span *ngIf="!(isLoading$ | async)">Enregister</span>
-                                            </button>
+                                            class="btn btn-primary">
+                                            <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                            <span *ngIf="isLoading$ | async">Loading...</span>
+                                            <span *ngIf="!(isLoading$ | async)">Enregister</span>
+                                        </button>
 
-                                            <!-- Button 2: Enregister Puis Continuer -->
-                                            <button mat-raised-button color="primary" [disabled]="state.dataState === DataState.LOADING 
+                                        <!-- Button 2: Enregister Puis Continuer -->
+                                        <button mat-raised-button color="primary" [disabled]="state.dataState === DataState.LOADING 
                                                 || !(isDisabled$ | async) 
                                                 || petitCreditForm.invalid" type="button" (click)="onSaveAndContinue()"
-                                                class="btn btn-primary">
-                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
-                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
-                                                <span *ngIf="isLoading$ | async">Loading...</span>
-                                                <span *ngIf="!(isLoading$ | async)">Enregister Puis Continuer</span>
-                                            </button>
-                                        </div>
+                                            class="btn btn-primary">
+                                            <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                            <span *ngIf="isLoading$ | async">Loading...</span>
+                                            <span *ngIf="!(isLoading$ | async)">Enregister Puis Continuer</span>
+                                        </button>
+                                    </div>
 
-                                        <div *ngIf="!(isDisabled$ | async)"
-                                            style="display: flex; flex-direction: column; gap: 15px; align-items: start;">
-                                            <!-- Button 1: Enregister -->
-                                            <button mat-raised-button color="warn"
-                                                [disabled]="state.dataState === DataState.LOADING || petitCreditForm.invalid"
-                                                type="button" (click)="updateData()" class="btn btn-primary"
-                                                style="width: auto;">
-                                                <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
-                                                    role="status" aria-hidden="true" style="margin-right: 5px"></span>
-                                                <span *ngIf="isLoading$ | async">Loading...</span>
-                                                <span *ngIf="!(isLoading$ | async)">Mise à jour</span>
-                                            </button>
+                                    <div *ngIf="!(isDisabled$ | async)"
+                                        style="display: flex; flex-direction: column; gap: 15px; align-items: start;">
+                                        <!-- Button 1: Enregister -->
+                                        <button mat-raised-button color="warn"
+                                            [disabled]="state.dataState === DataState.LOADING || petitCreditForm.invalid"
+                                            type="button" (click)="updateData()" class="btn btn-primary"
+                                            style="width: auto;">
+                                            <span *ngIf="isLoading$ | async" class="mat-spinner mat-spinner-small"
+                                                role="status" aria-hidden="true" style="margin-right: 5px"></span>
+                                            <span *ngIf="isLoading$ | async">Loading...</span>
+                                            <span *ngIf="!(isLoading$ | async)">Mise à jour</span>
+                                        </button>
 
-
-
+                                        <ng-container
+                                            *ngIf="state.appData?.data?.credit && state.appData?.data?.credit?.status=='REJECTED'"
+                                            ; else noActes>
+                                            <a [routerLink]="['/detailcredit/'+state.appData?.data?.credit?.referenceCredit+'/'+state.appData?.data?.credit?.codeMembre]"
+                                                mat-raised-button color="primary" type="button" class="btn btn-primary">
+                                                <span>Retour</span>
+                                            </a>
+                                        </ng-container>
+                                        <ng-template #noActes>
                                             <div style="display: flex; gap: 15px;">
                                                 <!-- Button: Retour -->
                                                 <button mat-raised-button color="primary"
@@ -203,16 +213,17 @@
                                                     <span>Suivant</span>
                                                 </button>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </ng-template>
 
-                                </div>
+                                    </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <app-footer></app-footer>
         </div>
+        <app-footer></app-footer>
     </div>
 </ng-container>

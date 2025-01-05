@@ -10,6 +10,7 @@ import {
   map,
   Observable,
   of,
+  pipe,
   startWith,
   switchMap,
 } from 'rxjs';
@@ -19,6 +20,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DemandeIndividuelService } from '../../services/individuel.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ProduitInd } from '../../interfaces/produit-ind';
+import { response } from 'express';
 
 @Component({
   selector: 'app-vente',
@@ -37,9 +39,11 @@ export class VenteComponent implements OnInit {
   venteIndForm!: FormGroup;
   private readonly REFERENCE_CREDIT: string = 'referencedcredit';
 
-  private disableSubject = new BehaviorSubject<boolean>(false); // is null
+  private disableSubject = new BehaviorSubject<boolean>(false);
   public isDisabled$ = this.disableSubject.asObservable();
 
+  private disableUpdateData = new BehaviorSubject<boolean>(false);
+  public isDisableData$ = this.disableUpdateData.asObservable();
   // referenceId
   private referenceId!: string;
 
@@ -66,6 +70,7 @@ export class VenteComponent implements OnInit {
     this.referenceId =
       this.activatedRouter.snapshot.paramMap.get('referencedcredit') || '';
     this.venteIndForm = this.fb.group({
+      id: [''],
       libele: ['', Validators.required],
       referenceCredit: [''],
       prixUnit: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -117,7 +122,10 @@ export class VenteComponent implements OnInit {
                 appData: this.dataSubject.value ?? undefined,
               };
             }),
-            startWith({ dataState: DataState.LOADING }),
+            startWith({
+              dataState: DataState.LOADING,
+              appData: this.dataSubject.value ?? undefined,
+            }),
             catchError((error: string) => {
               return of({
                 dataState: DataState.ERROR,
@@ -130,9 +138,90 @@ export class VenteComponent implements OnInit {
     );
   }
 
+  public deleteVenteId(id: number): void {
+    this.venteState$ = this.indService
+      .deleteProduitInd$(id, this.referenceId)
+      .pipe(
+        map((response) => {
+          console.log(response);
+          this.dataSubject.next(response);
+          this.dataSource.data = response.data?.produitInd ?? [];
+          this.venteIndForm.reset();
+          // Patch back the reference credit or any default values you need
+          this.venteIndForm.patchValue({ referenceCredit: this.referenceId });
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
+  }
+
   public onSaveAndContinue(): void {}
 
-  public updateVenteInd(): void {}
+  public updateVenteInd(produit: ProduitInd): void {
+    // this will allow the button modification
+    this.disableUpdateData.next(true);
+    if (produit != null) {
+      this.venteIndForm.patchValue({
+        id: produit.id,
+        libele: produit.libele,
+        referenceCredit: produit.referenceCredit,
+        prixUnit: produit.prixUnit,
+        qte: produit.qte,
+        observation: produit.observation,
+      });
+    }
+  }
+
+  /**
+   * Mise a jour les donnees pour le produit
+   */
+  public updateVenteData(): void {
+    this.loadingSubject.next(true);
+    const produitInd = this.venteIndForm.value;
+    const produit_id = produitInd.id;
+    const produit_referenceCredit = produitInd.referenceCredit;
+    console.log(produit_id, produit_referenceCredit);
+    this.venteState$ = this.indService
+      .updateProduitInd$(produit_id, produit_referenceCredit, produitInd)
+      .pipe(
+        map((response) => {
+          console.log(response);
+          this.dataSource.data = response.data?.produitInd ?? [];
+          this.venteIndForm.reset();
+          this.disableUpdateData.next(false);
+          this.loadingSubject.next(false);
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          this.loadingSubject.next(false);
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
+  }
 
   public goNext(): void {
     this.router.navigate([`/frequence/${this.referenceId}`]);

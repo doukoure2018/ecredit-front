@@ -79,6 +79,9 @@ export class DetailcreditComponent implements OnInit {
     'age',
   ];
 
+  // referenceId
+  private referenceId!: string;
+
   constructor(
     private individuelService: DemandeIndividuelService,
     private activatedRoute: ActivatedRoute,
@@ -86,6 +89,8 @@ export class DetailcreditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.referenceId =
+      this.activatedRoute.snapshot.paramMap.get('referencedcredit') || '';
     this.detailCreditIndState$ = this.activatedRoute.paramMap.pipe(
       switchMap((params: ParamMap) => {
         return this.individuelService
@@ -95,7 +100,7 @@ export class DetailcreditComponent implements OnInit {
           )
           .pipe(
             map((response) => {
-              console.log('okokokokok ' + response);
+              console.log(response);
               this.dataSubject.next(response);
               this.dataSourceCharge.data = response.data?.chargeind ?? [];
               this.dataSourceProduit.data = response.data?.produitInd ?? [];
@@ -134,4 +139,20 @@ export class DetailcreditComponent implements OnInit {
   }
 
   public confirmedCreditAgent(): void {}
+
+  public updateProfile(): void {
+    this.router.navigate([`/petitcredit/${this.referenceId}`]);
+  }
+
+  public updateAnalyseCredit(): void {
+    this.router.navigate([`/charge/${this.referenceId}`]);
+  }
+
+  public updateAnalyseCreditProduit(): void {
+    this.router.navigate([`/vente/${this.referenceId}`]);
+  }
+
+  public updateGarantie(): void {
+    this.router.navigate([`/garanties/${this.referenceId}`]);
+  }
 }

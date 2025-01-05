@@ -17,6 +17,8 @@ import { DemandeIndividuelService } from '../../services/individuel.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Personnecaution } from '../../interfaces/personne-caution';
+import { response } from 'express';
+import { error } from 'console';
 
 @Component({
   selector: 'app-personnecaution',
@@ -39,6 +41,10 @@ export class PersonnecautionComponent implements OnInit {
   private disableSubject = new BehaviorSubject<boolean>(false); // is null
   public isDisabled$ = this.disableSubject.asObservable();
 
+  // this is used to allow the modification button
+  private disableUpdateData = new BehaviorSubject<boolean>(false);
+  public isDisableData$ = this.disableUpdateData.asObservable();
+
   // Displaying material tables
   public dataSource: MatTableDataSource<Personnecaution> =
     new MatTableDataSource();
@@ -59,6 +65,7 @@ export class PersonnecautionComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.personnecautionForm = this.fb.group({
+      id: [''],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       telephone: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -104,6 +111,7 @@ export class PersonnecautionComponent implements OnInit {
           this.dataSubject.next(response);
           this.loadingSubject.next(false);
           this.dataSource.data = response.data?.garantiepersonnecaution ?? [];
+          this.personnecautionForm.reset();
           return {
             dataState: DataState.LOADED,
             appData: this.dataSubject.value ?? undefined,
@@ -120,5 +128,98 @@ export class PersonnecautionComponent implements OnInit {
       );
   }
 
-  updataPersonneCaution(): void {}
+  /**
+   * MISE DES INFORMATIONS DE LA PERSONNE CAUTION
+   */
+  updataPersonneCaution(): void {
+    this.loadingSubject.next(true);
+    const personneCaution_ind = this.personnecautionForm.value;
+    const personneCaution_id = personneCaution_ind.id;
+    const personneCaution_referenceCredit = personneCaution_ind.referenceCredit;
+    this.personneCautionState$ = this.personnecautionService
+      .udpatePersonneCaution$(
+        personneCaution_id,
+        personneCaution_referenceCredit,
+        personneCaution_ind
+      )
+      .pipe(
+        map((response) => {
+          console.log(response);
+          this.dataSubject.next(response);
+          this.dataSource.data = response.data?.garantiepersonnecaution ?? [];
+          this.personnecautionForm.reset();
+          //yes  If you still need `referenceCredit` in the form for adding a new entry:
+          this.personnecautionForm.patchValue({
+            referenceCredit: personneCaution_referenceCredit,
+          });
+
+          this.disableUpdateData.next(false);
+          this.loadingSubject.next(false);
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
+  }
+
+  public viewPersonneCaution(personnecaution: Personnecaution): void {
+    console.log(personnecaution);
+    this.disableUpdateData.next(true);
+    if (personnecaution != null) {
+      this.personnecautionForm.patchValue({
+        id: personnecaution.id,
+        nom: personnecaution.nom,
+        prenom: personnecaution.prenom,
+        telephone: personnecaution.telephone,
+        referenceCredit: personnecaution.referenceCredit,
+        activite: personnecaution.activite,
+        age: personnecaution.age,
+        profession: personnecaution.profession,
+      });
+    }
+  }
+
+  public deletePersonneCaution(personnecaution: Personnecaution): void {
+    this.personneCautionState$ = this.personnecautionService
+      .deletePersonneCaution$(
+        personnecaution.id!,
+        personnecaution.referenceCredit!
+      )
+      .pipe(
+        map((response) => {
+          this.dataSubject.next(response);
+          this.dataSource.data = response.data?.garantiepersonnecaution ?? [];
+          this.disableSubject.next(false);
+          this.disableUpdateData.next(false);
+          this.personnecautionForm.reset();
+          return {
+            dataState: DataState.LOADED,
+            appData: this.dataSubject.value ?? undefined,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADING,
+          appData: this.dataSubject.value ?? undefined,
+        }),
+        catchError((error: string) => {
+          return of({
+            dataState: DataState.ERROR,
+            error,
+            appData: this.dataSubject.value ?? undefined,
+          });
+        })
+      );
+  }
 }
